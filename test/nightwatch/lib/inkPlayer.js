@@ -192,6 +192,7 @@ function checkConvert(browser, config, strokes, labels, component = '#editor', r
 }
 
 function checkSmartGuide(browser, config, strokes, labels, component = '#editor', resultSelector = '#editorSupervisor', emptyResultSelector = '#editorSupervisor') {
+  console.log('url ' +  browser.launchUrl + config.componentPath)
   browser
     .init(browser.launchUrl + config.componentPath).maximizeWindow()
     .waitForElementVisible(component, 1000 * globalconfig.timeoutAmplificator)
@@ -245,7 +246,7 @@ function checkSmartGuide(browser, config, strokes, labels, component = '#editor'
 
 function checkUndoRedoReconnect(browser, config, strokes, labels, component = '#editor', resultSelector = '#editorSupervisor', emptyResultSelector = '#editorSupervisor') {
   const isWebSocketV4 = (config.apiVersion === 'V4' && config.protocol !== 'REST');
-  console.log('url ' +  browser.launchUrl + config.componentPath)
+  //console.log('url ' +  browser.launchUrl + config.componentPath)
   browser
     .init(browser.launchUrl + config.componentPath).maximizeWindow()
     .waitForElementVisible(component, 1000 * globalconfig.timeoutAmplificator)
@@ -354,10 +355,12 @@ function checkAlwaysConnected(browser, config, strokes, labels, component = '#ed
   checkNbStrokes(browser, config, resultSelector, 'nbstrokes', strokes.length);
   checkLabel(browser, labels, strokes.length - 1, resultSelector, emptyResultSelector);
 
+
   browser.end();
 }
 
 function checkRawContent(browser, config, strokes, component = '#editor', resultSelector = '#editorSupervisor') {
+  console.log('url ' +  browser.launchUrl + config.componentPath)
   browser
     .init(browser.launchUrl + config.componentPath).maximizeWindow()
     .waitForElementVisible(component, 1000 * globalconfig.timeoutAmplificator)
@@ -374,6 +377,34 @@ function checkRawContent(browser, config, strokes, component = '#editor', result
   browser.end();
 }
 
+function checkRecognitionAssetBuilder(browser, config, strokes, labels, component = '#editor', resultSelector = '#editorSupervisor', emptyResultSelector = '#editorSupervisor') {
+  console.log('url ' +  browser.launchUrl + config.componentPath);
+  console.log('nb strokes ' + strokes.length);
+  browser
+    .init(browser.launchUrl + config.componentPath).maximizeWindow()
+    .waitForElementVisible(component, 1000 * globalconfig.timeoutAmplificator)
+    .listenEditor()
+    .waitForElementPresent('#editorSupervisor', 1000 * globalconfig.timeoutAmplificator)
+    .waitUntilElementPropertyEqual('#editorSupervisor', 'unloaded', false, 3000 * globalconfig.timeoutAmplificator);
+
+  if(config.type === 'TEXT') {
+    browser
+      .waitForElementPresent('#lexicon', 1000 * globalconfig.timeoutAmplificator)
+      .setProperty('#lexicon', 'value', 'zhr jxf')
+      .click('#reinit')
+  }
+
+  browser
+    .pause(2000)
+    .playStrokes(component, strokes, 100, 100, 1000 * globalconfig.timeoutAmplificator)
+    .waitUntilElementPropertyEqual('#editorSupervisor', 'state', 'EXPORTED', 1000 * globalconfig.timeoutAmplificator);
+
+  checkLabel(browser, labels, strokes.length - 1, resultSelector, emptyResultSelector);
+
+
+  browser.end();
+}
+
 
 module.exports = {
   checkLabels,
@@ -382,5 +413,6 @@ module.exports = {
   checkSmartGuide,
   checkUndoRedoReconnect,
   checkAlwaysConnected,
-  checkRawContent
+  checkRawContent,
+  checkRecognitionAssetBuilder
 };

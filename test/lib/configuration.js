@@ -6,6 +6,8 @@ const one = require('./inks/one.json');
 const equation = require('./inks/equation.json');
 const equation2 = require('./inks/equation2.json');
 const equation3 = require('./inks/equation3.json');
+const threetimes2 = require('./inks/3times2.json');
+const rabText = require('./inks/rabText.json');
 const hello = require('./inks/hello.json');
 const helloHow = require('./inks/helloHowAreYou.json');
 const shape = require('./inks/shape.json');
@@ -86,6 +88,14 @@ const inks = [{
     ]
   }
 }, {
+  name: '3times2',
+  type: 'MATH',
+  strokes: threetimes2,
+  apiVersion: 'V4',
+  exports: {
+    LATEX: ['3', '31', '311','3112']
+  }
+}, {
   name: 'hello',
   type: 'TEXT',
   strokes: hello,
@@ -108,6 +118,14 @@ const inks = [{
   apiVersion: '',
   exports: {
     TEXT: ['hello', 'hello how', 'hello how o', 'hello how are', 'hello how are you', 'hello how are you?', 'hello how are you?']
+  }
+}, {
+  name: 'rabText',
+  type: 'TEXT',
+  strokes: rabText,
+  apiVersion: 'V4',
+  exports: {
+    TEXT: ['z', 'zhr', 'zhr j', 'zhr j', 'zhr je', 'zhr jxf']
   }
 }, {
   name: 'shape',
@@ -208,10 +226,22 @@ const configurations = [{
   apiVersion: 'V4',
   examples: ['/examples/v4/websocket_math_iink.html'],
 }, {
+  type: 'MATH',
+  protocol: 'WEBSOCKET',
+  apiVersion: 'V4',
+  alternate: 'RAB',
+  examples: ['/examples/v4/custom_resources_content_math.html'],
+}, {
   type: 'TEXT',
   protocol: 'WEBSOCKET',
   apiVersion: 'V4',
   examples: ['/examples/v4/websocket_text_iink.html'],
+}, {
+  type: 'TEXT',
+  protocol: 'WEBSOCKET',
+  apiVersion: 'V4',
+  alternate: 'RAB',
+  examples: ['/examples/v4/custom_lexicon_text.html'],
 }, {
   type: 'TEXT',
   protocol: 'REST',
@@ -237,7 +267,7 @@ const walkSync = (dir, fileList) => {
   return fileListRef;
 };
 
-function getConfiguration(type, protocol, apiVersion = 'V3', inputMode) {
+function getConfiguration(type, protocol, apiVersion = 'V3', inputMode, alternate) {
   const subPath = inputMode ? [type, inputMode].join('_').toLowerCase() : type.toLowerCase();
   return {
     type,
@@ -249,7 +279,8 @@ function getConfiguration(type, protocol, apiVersion = 'V3', inputMode) {
         (conf.type === type) &&
         (conf.protocol === protocol) &&
         (conf.apiVersion === apiVersion) &&
-        (inputMode ? conf.inputMode === inputMode : true)))
+        (inputMode ? conf.inputMode === inputMode : true) &&
+        (alternate ? conf.alternate === alternate : true)))
       .map(conf => conf.examples)
       .reduce((a, b) => a.concat(b))
       .shift(),
