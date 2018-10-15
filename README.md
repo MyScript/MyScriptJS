@@ -151,7 +151,7 @@ bower install myscript
         </style>
     </head>
     <body>
-        <div id="editor"></div>
+        <div id="editor" touch-action="none"></div>
     <script>
         const editorElement = document.getElementById('editor');
 
