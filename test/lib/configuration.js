@@ -231,6 +231,12 @@ const configurations = [{
   apiVersion: 'V4',
   alternate: 'RAB',
   examples: ['/examples/v4/custom_resources_content_math.html'],
+},{
+  type: 'MATH',
+  protocol: 'WEBSOCKET',
+  apiVersion: 'V4',
+  alternate: 'import',
+  examples: ['/examples/v4/import_content_math.html'],
 }, {
   type: 'TEXT',
   protocol: 'WEBSOCKET',

@@ -1,4 +1,4 @@
-exports.command = function getExports(callback) {
+exports.command = function getJiixExports(callback) {
   const self = this;
 
   function getElementProperty() {

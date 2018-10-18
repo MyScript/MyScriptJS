@@ -19,7 +19,7 @@ function checkTextNonText(browser, resultSelector) {
   if (resultSelector && resultSelector.length > 0) {
     browser.waitForElementPresent(resultSelector, 6000 * globalconfig.timeoutAmplificator);
   }
-  browser.getExports(function (res) {
+  browser.getJiixExports(function (res) {
     //console.log('export res: ' + JSON.stringify(res.value));
     const parsedjiix = JSON.parse(res.value);
 
@@ -50,7 +50,7 @@ function getStrokesFromJIIX(jiix) {
 function checkNbStrokes(browser, config, resultSelector, property, nbStrokesExpected) {
   const isWebSocketV4 = (config.apiVersion === 'V4' && config.protocol !== 'REST');
   if(isWebSocketV4) {
-    browser.getExports(function (res) {
+    browser.getJiixExports(function (res) {
       //console.log('export= ' + JSON.stringify(res.value));
       browser.verify.equal(getStrokesFromJIIX(res.value).length, String(nbStrokesExpected));
     })
@@ -83,6 +83,7 @@ function checkLabels(browser, config, strokes, labels, component = '#editor', re
 }
 
 function checkUndoRedo(browser, config, strokes, labels, component = '#editor', resultSelector = '#editorSupervisor', emptyResultSelector = '#editorSupervisor') {
+  console.log('url ' +  browser.launchUrl + config.componentPath);
   const isWebSocketV4 = (config.apiVersion === 'V4' && config.protocol !== 'REST');
   browser
     .init(browser.launchUrl + config.componentPath).maximizeWindow()
@@ -245,6 +246,7 @@ function checkSmartGuide(browser, config, strokes, labels, component = '#editor'
 }
 
 function checkUndoRedoReconnect(browser, config, strokes, labels, component = '#editor', resultSelector = '#editorSupervisor', emptyResultSelector = '#editorSupervisor') {
+  console.log('url ' +  browser.launchUrl + config.componentPath);
   const isWebSocketV4 = (config.apiVersion === 'V4' && config.protocol !== 'REST');
   //console.log('url ' +  browser.launchUrl + config.componentPath)
   browser
@@ -405,6 +407,57 @@ function checkRecognitionAssetBuilder(browser, config, strokes, labels, componen
   browser.end();
 }
 
+function checkImport(browser, config, strokes, labels, component = '#editor', resultSelector = '#editorSupervisor', emptyResultSelector = '#editorSupervisor') {
+  console.log('url ' +  browser.launchUrl + config.componentPath);
+  console.log('nb strokes ' + strokes.length);
+  let jiixExport = '';
+  browser
+    .init(browser.launchUrl + config.componentPath).maximizeWindow()
+    .waitForElementVisible(component, 1000 * globalconfig.timeoutAmplificator)
+    .listenEditor()
+    .waitForElementPresent('#editorSupervisor', 1000 * globalconfig.timeoutAmplificator)
+    .waitUntilElementPropertyEqual('#editorSupervisor', 'unloaded', false, 3000 * globalconfig.timeoutAmplificator);
+
+  browser
+    .playStrokes(component, strokes, 100, 100, 3000 * globalconfig.timeoutAmplificator)
+    //.waitUntilElementPropertyEqual('#editorSupervisor', 'nbstrokes', strokes.length, 3000 * globalconfig.timeoutAmplificator)
+    .waitUntilElementPropertyEqual('#editorSupervisor', 'state', 'EXPORTED', 3000 * globalconfig.timeoutAmplificator);
+
+  checkNbStrokes(browser, config, resultSelector, 'nbstrokes', strokes.length);
+  checkLabel(browser, labels, strokes.length - 1, resultSelector, emptyResultSelector);
+
+  browser.getJiixExports(function (res) {
+    const parsedjiix = JSON.parse(res.value);
+    browser.verify.equal(parsedjiix.type, "Math");
+    jiixExport = parsedjiix;
+  });
+
+  browser
+    .click('#clear')
+    .waitForIdle('#editorSupervisor', 3000 * globalconfig.timeoutAmplificator);
+
+  checkLabel(browser, labels, -1, resultSelector, emptyResultSelector);
+
+  browser
+    .waitForElementPresent('#importContentField', 1000 * globalconfig.timeoutAmplificator)
+    .waitForElementPresent('#importContent', 1000 * globalconfig.timeoutAmplificator)
+    .setProperty('#importContentField', 'value', JSON.stringify(jiixExport))
+    .getProperty('#importContentField', 'value', res => {
+      //console.log('jiixExport: ' + JSON.stringify(jiixExport));
+      browser.verify.equal(res.value, JSON.stringify(jiixExport))
+    })
+    .click("#importContent")
+    .waitForIdle('#editorSupervisor', 3000 * globalconfig.timeoutAmplificator)
+    .waitUntilElementPropertyEqual('#editorSupervisor', 'state', 'EXPORTED', 2000 * globalconfig.timeoutAmplificator);
+
+  browser.getJiixExports(function (res) {
+    console.log('res= ' + JSON.stringify(res.value));
+  });
+
+  checkLabel(browser, labels, strokes.length - 1, resultSelector, emptyResultSelector);
+
+  browser.end();
+}
 
 module.exports = {
   checkLabels,
@@ -414,5 +467,6 @@ module.exports = {
   checkUndoRedoReconnect,
   checkAlwaysConnected,
   checkRawContent,
-  checkRecognitionAssetBuilder
+  checkRecognitionAssetBuilder,
+  checkImport
 };
