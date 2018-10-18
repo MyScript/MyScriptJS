@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="HandheldFriendly" content="true"/>
+
+    <title>Word Export with iink</title>
+
+    <link rel="stylesheet" href="../../dist/myscript.min.css"/>
+    <link rel="stylesheet" href="../examples.css">
+
+    <style>
+      #export-result {
+        height: 100px;
+        padding: 12px;
+        overflow: auto;
+      }
+    </style>
+
+    <!-- Live reload with webpack -->
+    <script type="text/javascript" src="http://localhost:8080/webpack-dev-server.js"></script>
+    <script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
+    <script type="text/javascript" src="../../dist/myscript.min.js"></script>
+  </head>
+
+  <body touch-action="none">
+    <div>
+      <nav>
+        <div class="button-div">
+          <button id="clear" class="nav-btn btn-fab-mini btn-lightBlue" disabled>
+            <img src="../assets/img/clear.svg">
+          </button>
+          <button id="undo" class="nav-btn btn-fab-mini btn-lightBlue" disabled>
+            <img src="../assets/img/undo.svg">
+          </button>
+          <button id="redo" class="nav-btn btn-fab-mini btn-lightBlue" disabled>
+            <img src="../assets/img/redo.svg">
+          </button>
+        </div>
+        <div class="spacer"></div>
+        <button class="classic-btn" id="exportContent" disabled>Export to docx file</button>
+      </nav>
+      <div id="editor"></div>
+    </div>
+    <script>
+
+      const wordMimeType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+      var editorElement = document.getElementById('editor');
+      var undoElement = document.getElementById('undo');
+      var redoElement = document.getElementById('redo');
+      var clearElement = document.getElementById('clear');
+      var exportElement = document.getElementById('exportContent');
+
+      editorElement.addEventListener('changed', function (event) {
+        undoElement.disabled = !event.detail.canUndo;
+        redoElement.disabled = !event.detail.canRedo;
+        exportElement.disabled = !event.detail.canExport;
+        clearElement.disabled = event.detail.isEmpty;
+      });
+
+      var base64toBlob = function(data) {
+        var byteCharacters = window.atob(data);
+        var byteNumbers = new Array(byteCharacters.length);
+        for (var i = 0; i < byteCharacters.length; i++) {
+          byteNumbers[i] = byteCharacters.charCodeAt(i);
+        }
+        var byteArray = new Uint8Array(byteNumbers);
+        return new Blob([byteArray], {type: wordMimeType});
+
+      };
+
+      editorElement.addEventListener('exported', function (evt) {
+        if (evt.detail && evt.detail.exports[wordMimeType]) {
+          var aa = document.createElement("a");
+          var blobUrl = URL.createObjectURL(base64toBlob(evt.detail.exports[wordMimeType]));
+          aa.href = blobUrl;
+          aa.download = "myDocument.docx";
+          document.body.appendChild(aa);
+          aa.click();
+          aa.remove();
+          URL.revokeObjectURL(blobUrl);
+
+        }
+      });
+      undoElement.addEventListener('click', function () {
+        editorElement.editor.undo();
+      });
+      redoElement.addEventListener('click', function () {
+        editorElement.editor.redo();
+      });
+      clearElement.addEventListener('click', function () {
+        editorElement.editor.clear();
+      });
+      exportElement.addEventListener('click', function () {
+        exportElement.disabled = true;
+        editorElement.editor.export_([wordMimeType, 'application/vnd.myscript.jiix']);
+      });
+
+      /**
+       * Attach an editor to the document
+       * @param {Element} The DOM element to attach the ink paper
+       * @param {Object} The recognition parameters
+       */
+      MyScript.register(editorElement, {
+        recognitionParams: {
+          server: {
+            scheme: 'http',
+            host: 'localhost:8897',
+            applicationKey: '515131ab-35fa-411c-bb4d-3917e00faf60',
+            hmacKey: '54b2ca8a-6752-469d-87dd-553bb450e9ad',
+            websocket: {
+              pingEnabled: false,
+              autoReconnect: true
+            }
+          },
+          v4: {
+            text: {
+              mimeTypes: ['application/vnd.myscript.jiix']
+            },
+          }
+        }
+      });
+
+      window.addEventListener('resize', function () {
+        editorElement.editor.resize();
+      });
+
+    </script>
+  </body>
+
+</html>
