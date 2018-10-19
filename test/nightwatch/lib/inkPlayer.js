@@ -423,12 +423,10 @@ function checkImport(browser, config, strokes, labels, component = '#editor', re
     //.waitUntilElementPropertyEqual('#editorSupervisor', 'nbstrokes', strokes.length, 3000 * globalconfig.timeoutAmplificator)
     .waitUntilElementPropertyEqual('#editorSupervisor', 'state', 'EXPORTED', 3000 * globalconfig.timeoutAmplificator);
 
-  checkNbStrokes(browser, config, resultSelector, 'nbstrokes', strokes.length);
   checkLabel(browser, labels, strokes.length - 1, resultSelector, emptyResultSelector);
 
   browser.getJiixExports(function (res) {
     const parsedjiix = JSON.parse(res.value);
-    browser.verify.equal(parsedjiix.type, "Math");
     jiixExport = parsedjiix;
 
     browser
@@ -441,17 +439,9 @@ function checkImport(browser, config, strokes, labels, component = '#editor', re
       .waitForElementPresent('#importContentField', 1000 * globalconfig.timeoutAmplificator)
       .waitForElementPresent('#importContent', 1000 * globalconfig.timeoutAmplificator)
       .setProperty('#importContentField', 'value', JSON.stringify(jiixExport))
-      .getProperty('#importContentField', 'value', res => {
-        //console.log('jiixExport: ' + JSON.stringify(jiixExport));
-        browser.verify.equal(res.value, JSON.stringify(jiixExport))
-      })
       .click("#importContent")
       .waitForIdle('#editorSupervisor', 3000 * globalconfig.timeoutAmplificator)
       .waitUntilElementPropertyEqual('#editorSupervisor', 'state', 'EXPORTED', 2000 * globalconfig.timeoutAmplificator);
-
-    browser.getJiixExports(function (res) {
-      console.log('res= ' + JSON.stringify(res.value));
-    });
 
     checkLabel(browser, labels, strokes.length - 1, resultSelector, emptyResultSelector);
   });

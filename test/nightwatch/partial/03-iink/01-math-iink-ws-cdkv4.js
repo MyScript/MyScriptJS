@@ -37,5 +37,5 @@ config.inks
 
 
 configImport.inks
-  .filter(ink => ['equation3'].includes(ink.name))
+  .filter(ink => ['equation2', 'equation3'].includes(ink.name))
   .forEach(ink => runImportTests(ink));
