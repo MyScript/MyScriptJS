@@ -33,8 +33,8 @@ nav {
 }
 
 .input-field {
-    height: 48px;
-    padding: 2px 15px 2px;
+    height: 36px;
+    padding: 2px 15px 3px;
     font: inherit;
     font-weight: 600;
     border-radius: 3px;

@@ -20,22 +20,16 @@
 </head>
 
 <body touch-action="none">
-<div class="languages">
-  <select id="language"></select>
-</div>
-<div id="result"></div>
+
 <div>
   <nav>
-    <div class="button-div">
-      <button id="clear" class="nav-btn btn-fab-mini btn-lightBlue" disabled>
-        <img src="../assets/img/clear.svg">
-      </button>
-      <button id="undo" class="nav-btn btn-fab-mini btn-lightBlue" disabled>
-        <img src="../assets/img/undo.svg">
-      </button>
-      <button id="redo" class="nav-btn btn-fab-mini btn-lightBlue" disabled>
-        <img src="../assets/img/redo.svg">
-      </button>
+    <div class="languages">
+      <select id="language"></select>
+    </div>
+    <div class="spacer"></div>
+    <div class="search">
+      <input id="searchInput" type="search" class="input-field">
+      <button id="searchBtn" class="classic-btn">Search</button>
     </div>
     <div class="spacer"></div>
     <button class="classic-btn" id="convert" disabled>Convert</button>
@@ -46,25 +40,75 @@
   var editorElement = document.getElementById('editor');
   var resultElement = document.getElementById('result');
   var languageElement = document.getElementById('language');
-  var undoElement = document.getElementById('undo');
-  var redoElement = document.getElementById('redo');
-  var clearElement = document.getElementById('clear');
   var convertElement = document.getElementById('convert');
+  var searchInput = document.getElementById('searchInput');
+  var searchBtn = document.getElementById('searchBtn');
+  var lastJiix = undefined;
 
-  editorElement.addEventListener('changed', function (event) {
-    undoElement.disabled = !event.detail.canUndo;
-    redoElement.disabled = !event.detail.canRedo;
-    clearElement.disabled = event.detail.isEmpty;
-  });
+  // Utility function transforming millimeters to pixel as iinkSDK is millimeters only
+  function mmToPixel(mm) {
+    return ((96 * mm) / 25.4)
+  }
+
+  // Highlight a series of words (jiix structure) by creating a div with a lower z-index
+  function highlightWords(words) {
+    words.forEach(word => {
+      const boundingBox = word['bounding-box'];
+      const newElement = document.createElement("div");
+      newElement.style.position = "absolute";
+      newElement.style.left = mmToPixel(boundingBox.x) + "px";
+      newElement.style.top = (88 + mmToPixel(boundingBox.y)) + "px";
+      newElement.style.height = mmToPixel(boundingBox.height) + "px";
+      newElement.style.width = mmToPixel(boundingBox.width) + "px";
+
+      newElement.classList.add('highlight');
+      newElement.style.backgroundColor = "yellow";
+      newElement.style.zIndex = 11;
+
+      document.body.appendChild(newElement);
+    })
+  }
+
+
+  // Perform the search by iterating the last jiix received and ignoring the carriage returns and blank in it.
+  function performSearch() {
+    document.querySelectorAll('.highlight').forEach(elem => elem.parentNode.removeChild(elem));
+
+    if(searchInput.value && lastJiix) {
+      searchWords = searchInput.value.split(" ");
+      let posUnderEvaluation = 0;
+      let wordsToHighlight = [];
+
+
+      lastJiix.words.forEach(word => {
+        const searchWord = searchWords[posUnderEvaluation];
+        if (word.label.trim() !== "") {
+          if (word.label.toUpperCase() === searchWord.toUpperCase()) {
+            wordsToHighlight.push(word);
+            if (posUnderEvaluation === (searchWords.length - 1)) {
+              highlightWords(wordsToHighlight);
+              posUnderEvaluation = 0;
+              wordsToHighlight = [];
+            } else {
+              posUnderEvaluation++;
+            }
+          } else {
+            posUnderEvaluation = 0;
+            wordsToHighlight = [];
+          }
+        }
+      });
+    }
+  }
+  searchBtn.addEventListener('click', performSearch);
 
   editorElement.addEventListener('exported', function (evt) {
     var exports = evt.detail.exports;
-    if (exports && exports['text/plain']) {
+    if (exports) {
       convertElement.disabled = false;
-      resultElement.innerHTML = '<span>' + exports['text/plain'] + '</span>';
-    } else {
-      convertElement.disabled = true;
-      resultElement.innerHTML = '';
+      if (exports['application/vnd.myscript.jiix']) {
+        lastJiix = JSON.parse(exports['application/vnd.myscript.jiix']);
+      }
     }
   });
 
@@ -84,6 +128,11 @@
     }
   });
 
+  editorElement.addEventListener('changed',() => {
+    console.log("converted");
+    performSearch();
+  });
+
   languageElement.addEventListener('change', function (e) {
     resultElement.innerHTML = '';
     var configuration = editorElement.editor.configuration;
@@ -92,15 +141,6 @@
     editorElement.editor.configuration = configuration;
   });
 
-  undoElement.addEventListener('click', function () {
-    editorElement.editor.undo();
-  });
-  redoElement.addEventListener('click', function () {
-    editorElement.editor.redo();
-  });
-  clearElement.addEventListener('click', function () {
-    editorElement.editor.clear();
-  });
   convertElement.addEventListener('click', function () {
     editorElement.editor.convert();
   });
@@ -122,6 +162,11 @@
         hmacKey: '54b2ca8a-6752-469d-87dd-553bb450e9ad'
       },
       v4: {
+        export: {
+          jiix: {
+            'bounding-box': true,
+          }
+        },
         text: {
           smartGuide: false
         }
