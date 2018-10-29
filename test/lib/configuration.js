@@ -125,7 +125,7 @@ const inks = [{
   strokes: rabText,
   apiVersion: 'V4',
   exports: {
-    TEXT: ['z', 'zhr', 'zhr j', 'zhr j', 'zhr je', 'zhr jxf']
+    TEXT: ['covfefe']
   }
 }, {
   name: 'shape',

@@ -392,7 +392,7 @@ function checkRecognitionAssetBuilder(browser, config, strokes, labels, componen
   if(config.type === 'TEXT') {
     browser
       .waitForElementPresent('#lexicon', 1000 * globalconfig.timeoutAmplificator)
-      .setProperty('#lexicon', 'value', 'zhr jxf')
+      .setProperty('#lexicon', 'value', 'covfefe')
       .click('#reinit')
   }
 
