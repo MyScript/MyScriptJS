@@ -130,8 +130,7 @@
   });
 
   editorElement.addEventListener('changed',() => {
-    console.log("converted");
-    performSearch();
+    document.querySelectorAll('.highlight').forEach(elem => elem.parentNode.removeChild(elem));
   });
 
   languageElement.addEventListener('change', function (e) {
