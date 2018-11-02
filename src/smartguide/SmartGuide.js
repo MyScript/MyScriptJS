@@ -296,7 +296,7 @@ export function createSmartGuide(editor) {
    * @type {Clipboard}
    */
   const clipboard = new Clipboard(elements.copyElement);
-  const perfectScrollbar = new PerfectScrollbar(elements.textContainer, { suppressScrollY: true });
+  const perfectScrollbar = new PerfectScrollbar(elements.textContainer, { suppressScrollY: true, scrollXMarginOffset: 1 });
 
   const smartGuide = {
     editor,
