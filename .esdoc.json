@@ -1,7 +1,16 @@
 {
   "source": "./src",
   "destination": "./docs",
-  "manual": {
-    "changelog": ["./CHANGELOG.md"]
-  }
+  "plugins": [
+    {
+      "name": "esdoc-standard-plugin",
+      "option": {
+        "manual": {
+          "index": "./CHANGELOG.md",
+          "asset": "",
+          "files": []
+        }
+      }
+    }
+  ]
 }
