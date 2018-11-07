@@ -42,8 +42,13 @@ function checkTextNonText(browser, resultSelector) {
 }
 
 function getStrokesFromJIIX(jiix) {
-  var strokesList = common.findValuesByKey(jiix, 'strokes')
-  //console.log('strokes= ' + JSON.stringify(strokesList));
+  var strokesList = []
+  var itemsList = common.findValuesByKey(jiix, 'items');
+  for (var i=0; i<itemsList.length; i++) {
+    if(itemsList[i].type == "stroke") {
+      strokesList.push(itemsList[i]);
+    }
+  }
   return strokesList;
 }
 
