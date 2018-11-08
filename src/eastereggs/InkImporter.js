@@ -1,5 +1,6 @@
 /* eslint-disable no-undef */
 import { editorLogger as logger } from '../configuration/LoggerConfig';
+import * as InkModel from '../model/InkModel';
 
 /**
  * Function to copy past to inject ink during tutorial.
@@ -73,4 +74,15 @@ export function inkImporter(editorParam, strokes, delayBetweenStrokes, lastOneDe
     }
   };
   play(actions, 0, delayBetweenStrokes);
+}
+
+
+export function importStrokeGroups(editorParam, strokeGroups) {
+  strokeGroups.forEach((group) => {
+    group.strokes.forEach((strokeFromGroup) => {
+      InkModel.addStroke(editorParam.model, strokeFromGroup);
+      InkModel.addStrokeToGroup(editorParam.model, strokeFromGroup, group.penStyle);
+    });
+  });
+  editorParam.renderer.drawModel(editorParam.rendererContext, editorParam.model, editorParam.stroker);
 }

@@ -12,7 +12,7 @@ import * as ImageRenderer from './renderer/canvas/ImageRenderer';
 import * as RecognizerContext from './model/RecognizerContext';
 import * as SmartGuide from './smartguide/SmartGuide';
 import Constants from './configuration/Constants';
-import { inkImporter } from './eastereggs/InkImporter';
+import * as eastereggs from './eastereggs/InkImporter';
 
 
 /**
@@ -827,6 +827,11 @@ export class Editor {
     }
   }
 
+  /**
+   * @Deprecated
+   * @param rawStrokes
+   * @param strokeGroups
+   */
   reDraw(rawStrokes, strokeGroups) {
     rawStrokes.forEach((stroke) => {
       InkModel.addStroke(this.model, stroke);
@@ -1046,13 +1051,31 @@ export class Editor {
     };
   }
 
+  /**
+   * Detach event listeners from the DOM element created at editor creation.
+   */
+  unload() {
+    if (this.grabber) { // Remove event handlers to avoid multiplication (detach grabber)
+      this.grabber.detach(this.domElement, this.grabberContext);
+    }
+    if (this.innerRenderer) {
+      this.innerRenderer.detach(this.domElement, this.rendererContext);
+    }
+  }
+
+  /**
+   * Trigger the change callbacks (and by default send a change event).
+   */
+  forceChange() {
+    triggerCallbacks(this, undefined, Constants.EventType.CHANGED);
+  }
+
   /* eslint-disable class-methods-use-this */
   /**
    * Get access to some easter egg features link ink injection. Use at your own risk (less tested and may be removed without notice).
-   * @returns {{inkImporter: inkImporter}}
    */
   get eastereggs() {
-    return { inkImporter };
+    return eastereggs;
   }
   /* eslint-enable class-methods-use-this */
 }

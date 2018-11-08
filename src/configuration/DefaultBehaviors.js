@@ -94,3 +94,5 @@ export function overrideDefaultBehaviors(behaviors) {
   }
   return defaultBehaviors;
 }
+
+export default defaultBehaviors;
