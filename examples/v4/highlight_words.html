@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="HandheldFriendly" content="true"/>
+
+  <title>Highlight words</title>
+
+  <link rel="stylesheet" href="../../dist/myscript.min.css"/>
+  <link rel="stylesheet" href="../examples.css">
+
+  <script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
+  <script type="text/javascript" src="../../dist/myscript.min.js"></script>
+  <style type="text/css">
+    #editor {
+      width: auto;
+    }
+    .colors {
+      display: flex;
+      overflow: auto;
+    }
+    .pensettings {
+      text-align: center;
+      user-select: none;
+      margin-right: 12px;
+    }
+    .color {
+      width: 36px;
+      height: 36px;
+      border: 1px solid silver;
+      border-radius: 50%;
+    }
+    .check {
+      border-bottom: 2px solid #000;
+      border-right: 2px solid #000;
+      display: inline-block;
+      transform: rotate(45deg);
+      height: 16px;
+      width: 8px;
+    }
+    #highlighted {
+      display: flex;
+      flex-direction: column;
+      background-color: white;
+      padding: 10px;
+      min-width: 20vh;
+      border-left: 1px solid #D7DDE3;
+    }
+    #highlighted .colored .header {
+      width: auto;
+      height: 10px;
+    }
+  </style>
+</head>
+<body>
+<div style="display: flex;">
+  <div style="width: 90vw;">
+    <nav>
+      <div class="button-div">
+        <button id="undo" class="nav-btn btn-fab-mini btn-lightBlue" disabled>
+          <img src="../assets/img/undo.svg">
+        </button>
+        <button id="redo" class="nav-btn btn-fab-mini btn-lightBlue" disabled>
+          <img src="../assets/img/redo.svg">
+        </button>
+      </div>
+      <div class="colors">
+        <div class="pensettings" data-color="#000000">
+          <button class="color" style="background-color: rgb(0, 0, 0);">
+            <span class="check" style="border-color: white;"></span>
+          </button>
+        </div>
+        <div class="pensettings" data-color="#808080">
+          <button class="color" style="background-color: rgb(128, 128, 128);"></button>
+        </div>
+        <div class="pensettings" data-color="#d9d9d9">
+          <button class="color" style="background-color: rgb(217, 217, 217);"></button>
+        </div>
+        <div class="pensettings" data-color="#1a8cff">
+          <button class="color" style="background-color: rgb(26, 140, 255);"></button>
+        </div>
+        <div class="pensettings" data-color="#ff1a40">
+          <button class="color" style="background-color: rgb(255, 26, 64);"></button>
+        </div>
+        <div class="pensettings" data-color="#2bd965">
+          <button class="color" style="background-color: rgb(43, 217, 101);"></button>
+        </div>
+        <div class="pensettings" data-color="#ffdd33">
+          <button class="color" style="background-color: rgb(255, 221, 51);"></button>
+        </div>
+      </div>
+    </nav>
+    <div id="editor" touch-action="none"></div>
+  </div>
+  <div id="highlighted"></div>
+</div>
+<script>
+  const editorElement = document.getElementById('editor');
+  const undoElement = document .getElementById('undo');
+  const redoElement = document.getElementById('redo');
+  const colors = document.querySelectorAll('.pensettings');
+  const highlightElement = document.getElementById('highlighted');
+
+  const hightlightedWords = new Map();
+
+  /**
+   * Update the editor's penStyle with the selected color
+   * @param {Object} event click event
+   * @return {void}
+   */
+  function handleColorClick(event) {
+    if(event && event.currentTarget) {
+      editor.penStyle = {
+        color: event.currentTarget.getAttribute('data-color'),
+        '-myscript-pen-width': 1
+      };
+      const check = document.querySelector('.check');
+      event.currentTarget.querySelector('.color').appendChild(check);
+    }
+  }
+
+  /**
+   * Create a DocumentFragement with the list of words for a color
+   * @param {Array} wordsToHighlight the list of word
+   * @param {String} color
+   * @param {String} id the id of the new container
+   * @return {DocumentFragment} fragment to add to the DOM
+   */
+  function addWordsToFragment(wordsToHighlight, color, id) {
+    const fragment = document.createDocumentFragment();
+    const div = document.createElement('div');
+    div.id = `id-${id}`;
+    div.classList.add('colored');
+
+    const header = document.createElement('div');
+    header.classList.add('header');
+    header.style.backgroundColor = color;
+
+    const ul = document.createElement('ul');
+    wordsToHighlight.forEach((word) => {
+      const li = document.createElement('li');
+      li.id = `${word.id}`;
+      li.textContent = word.label;
+
+      ul.appendChild(li);
+    });
+    div.appendChild(header);
+    div.appendChild(ul);
+    fragment.appendChild(div);
+
+    return fragment;
+  }
+
+  /**
+   * Show the higlighted words in a separate div order by color !
+   * @param {Array} words list of word to add
+   * @return {void}
+   */
+  function showHighlights(words) {
+    words.forEach((word) => {
+      // regex to find text decoration css value
+      const regex = /-myscript-text-decoration-color:\s#([0-9a-f]{3}){1,2}/i;
+      let color = '';
+      let wordsToHighlight = [];
+
+      if(regex.test(word.style)) {
+        const rule = word.style.match(regex);
+        // regex just for css value
+        const regexCss = rule[0].match(/#([0-9a-f]{3}){1,2}/i);
+        color = regexCss[0];
+      }
+
+      const id = color.replace('#', '');
+      // highlight color shown once
+      if(hightlightedWords.has(color)) {
+        const wordsForColor = hightlightedWords.get(color);
+        const found = wordsForColor.find((w) => {
+          return w.label === word.label;
+        });
+
+        if(!found) {
+          wordsToHighlight = wordsForColor.concat([word]);
+          hightlightedWords.set(color, wordsToHighlight);
+
+          const divElement = document.querySelector(`#id-${id}`);
+          if(divElement) {
+            let li = divElement.querySelector(`#${word.id}`);
+            if(!li) {
+              li = document.createElement('li');
+              li.id = `${word.id}`;
+              li.textContent = word.label;
+              divElement.querySelector('ul').appendChild(li);
+            }
+          }
+        }
+      } else {
+        // new highlight color !
+        wordsToHighlight.push(word);
+        hightlightedWords.set(color, wordsToHighlight);
+
+        highlightElement.appendChild(addWordsToFragment(wordsToHighlight, color, id));
+      }
+    });
+
+    if(hightlightedWords.size) {
+      let allWords = [];
+      hightlightedWords.forEach((word) => {
+        allWords = allWords.concat(word);
+      });
+
+      const deleted = allWords.filter(w => {
+        return !words.find((s) => {
+          return s.id === w.id && s.label === w.label;
+        });
+      });
+
+      if(deleted.length) {
+        handleDeletedWords(deleted);
+      }
+    }
+  }
+
+  /**
+   * Remove words from the highlight div, and the inner Map
+   * @param {Array} deleted list of words deleted
+   * @return {void}
+   */
+  function handleDeletedWords(deleted) {
+    deleted.forEach((word) => {
+      const li = document.querySelector(`#${word.id}`);
+      if(li) {
+        // removing from DOM
+        const ulNode = li.parentNode;
+        if(ulNode.childNodes.length === 1) {
+          const divNode = ulNode.parentNode;
+          divNode.parentNode.removeChild(divNode);
+        } else {
+          li.parentNode.removeChild(li);
+        }
+
+        // removing from Map
+        hightlightedWords.forEach((value, key) => {
+          const foundIndex = value.findIndex((w) => {
+            return w.id === word.id;
+          });
+          if(foundIndex !== -1) {
+            value.splice(foundIndex, 1);
+          }
+          if(!value.length) {
+            hightlightedWords.delete(key);
+          }
+        });
+      }
+    });
+  }
+
+  /**
+   * Reset the highlighted words list
+   * @return {void}
+   */
+  function reset() {
+    if(hightlightedWords.size) {
+      const wordsElement = highlightElement.querySelectorAll('.colored');
+      wordsElement.forEach((word) => {
+        word.parentNode.removeChild(word);
+      });
+      hightlightedWords.clear();
+    }
+  }
+
+  /**
+   * Find highlighted words inside jiix object
+   * @param {Object} jiix parsed object
+   * @return {void}
+   */
+  function findHighlightedWords(jiix) {
+    if(jiix && jiix.spans) {
+      const spans = jiix.spans.filter((span) => {
+        return span.class.indexOf('text-highlight') !== -1;
+      });
+
+      if(spans.length === 0) {
+        reset();
+      } else {
+        const label = jiix.label;
+        const words = spans.map((span) => {
+          const lastCharIndex = span['last-char'] + 1;
+          const cleanLabel = label.substring(span['first-char'], lastCharIndex).replace(/\r?\n/g, '');
+          return {
+            label: cleanLabel,
+            style: span.style,
+            id: `idLabel-${cleanLabel.replace(/\W/g, '-')}`
+          };
+        });
+
+        if (words.length) {
+          showHighlights(words);
+        }
+      }
+    } else {
+      reset();
+    }
+  }
+
+  /**
+   * Init listeners
+   */
+
+  editorElement.addEventListener('changed', (event) => {
+    undoElement.disabled = !event.detail.canUndo;
+    redoElement.disabled = !event.detail.canRedo;
+  });
+
+  editorElement.addEventListener('exported', (event) => {
+    const exports = event.detail.exports;
+    if(exports && exports['application/vnd.myscript.jiix']) {
+      const jiix = JSON.parse(exports['application/vnd.myscript.jiix']);
+      setTimeout(() =>  {
+        findHighlightedWords(jiix);
+      });
+    }
+  });
+
+  undoElement.addEventListener('click', () => {
+    editor.undo();
+  });
+  redoElement.addEventListener('click', () => {
+    editor.redo();
+  });
+
+  colors.forEach((el) => {
+    el.addEventListener('click', handleColorClick);
+  });
+
+  window.addEventListener('resize', () => {
+    editor.resize();
+  });
+
+  /**
+   * Attach the editor to the document
+   * @param {Element} the DOM element to attach the ink paper
+   * @param {Object} the recognition parameters
+   */
+  const editor = MyScript.register(editorElement, {
+    recognitionParams: {
+      type: 'TEXT',
+      protocol: 'WEBSOCKET',
+      apiVersion: 'V4',
+      server: {
+        scheme: 'https',
+        host: 'webdemoapi.myscript.com',
+        applicationKey: '515131ab-35fa-411c-bb4d-3917e00faf60',
+        hmacKey: '54b2ca8a-6752-469d-87dd-553bb450e9ad'
+      },
+      v4: {
+        export: {
+          jiix: {
+            style: true,
+          }
+        }
+      }
+    }
+  });
+</script>
+
+</body>
+</html>
