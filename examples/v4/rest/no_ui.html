@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="HandheldFriendly" content="true"/>
+
+  <title>REST Text iink</title>
+
+  <link rel="stylesheet" href="../../../dist/myscript.min.css"/>
+  <link rel="stylesheet" href="../../examples.css">
+
+  <script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
+  <script type="text/javascript" src="../../../dist/myscript.min.js"></script>
+
+  <style>
+    body {
+      display: flex;
+      flex-direction: row;
+    }
+    #rawStrokesT, #result {
+      min-height: 95vh;
+      max-height: 95vh;
+      min-width: 49vw;
+      max-width: 49vw;
+    }
+
+    #recognize {
+      position: absolute;
+      top: 2%;
+      left: calc(50% - 75px);
+      width: 125px;
+      height: 35px;
+    }
+    #result {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-evenly;
+    }
+
+    #interpretatedTextContent {
+      max-height: 50%;
+    }
+
+    #interpretatedImageContent {
+      max-width: 100%;
+      max-height: 50%;
+    }
+
+    #interpretatedImageContent > img {
+      max-width: 100%;
+    }
+  </style>
+</head>
+
+<body>
+<div id="rawStrokes">
+  <textarea id="rawStrokesT">
+    [{
+  "penStyle": {},
+  "strokes": [{
+    "type": "stroke",
+    "x": [45, 51, 65, 70, 79, 86, 95, 104, 116, 129, 141, 150, 159, 168, 171, 173, 176, 177, 177, 179, 179, 179, 181, 184, 184, 185, 186],
+    "y": [270, 266, 258, 255, 247, 242, 237, 228, 218, 206, 194, 185, 176, 167, 164, 161, 162, 165, 169, 183, 213, 235, 253, 267, 275, 278, 281],
+    "t": [1535613500439, 1535613500479, 1535613500501, 1535613500517, 1535613500534, 1535613500551, 1535613500568, 1535613500583, 1535613500601, 1535613500618, 1535613500633, 1535613500651, 1535613500667, 1535613500684, 1535613500701, 1535613500716, 1535613500844, 1535613500852, 1535613500867, 1535613500884, 1535613500900, 1535613500917, 1535613500933, 1535613500951, 1535613500967, 1535613500984, 1535613501001],
+    "p": [0.5, 0.731465038571735, 0.6447700112962658, 0.763022254896924, 0.6529899918043818, 0.8067411006940866, 0.6791319563903722, 0.6432378654991837, 0.6047722257759038, 0.5793837139035849, 0.5880465712185765, 0.6432378654991837, 0.6432378654991837, 0.6432378654991837, 0.7222966378316396, 0.7007103955941203, 0.6831899108492184, 0.6831899108492184, 0.7145158745241171, 0.6239396906913606, 0.4522774424948338, 0.530958424017657, 0.5744324932954251, 0.6216110326228266, 0.7993507587287858, 0.6831899108492184, 0.6831899108492184],
+    "l": [0, 7.211102550927978, 23.335618047525077, 29.16656994237038, 41.20816452116267, 49.8104897882053, 60.1061199291923, 72.83404199055016, 88.45454134236347, 106.1463473553176, 123.11691010379474, 135.84483216515258, 148.57275422651043, 161.30067628786827, 165.54331697498756, 169.14886825045156, 172.31114591061993, 175.4734235707883, 179.4734235707883, 193.61555919451925, 223.61555919451925, 245.61555919451925, 263.7263294707941, 278.04415053407047, 286.04415053407047, 289.20642819423887, 292.36870585440727],
+    "width": 1.8897637795275593,
+    "pointerType": "mouse",
+    "pointerId": 1,
+    "color": "#000000",
+    "-myscript-pen-width": 1,
+    "-myscript-pen-fill-style": "none",
+    "-myscript-pen-fill-color": "#FFFFFF00"
+  }, {
+    "type": "stroke",
+    "x": [249, 249, 248, 247, 246, 244, 243, 243, 243, 243, 243, 243, 243, 244, 246, 247, 250, 251, 252, 253, 255, 256, 257, 270, 278, 287, 295, 301, 305, 310, 317, 321, 326, 329],
+    "y": [176, 182, 188, 198, 208, 219, 230, 238, 246, 250, 253, 256, 252, 234, 226, 216, 209, 203, 198, 193, 188, 183, 180, 195, 203, 215, 223, 231, 239, 243, 251, 254, 258, 260],
+    "t": [1535613501677, 1535613501701, 1535613501720, 1535613501733, 1535613501751, 1535613501768, 1535613501783, 1535613501801, 1535613501817, 1535613501834, 1535613501851, 1535613501868, 1535613502100, 1535613502118, 1535613502134, 1535613502151, 1535613502167, 1535613502183, 1535613502200, 1535613502217, 1535613502234, 1535613502250, 1535613502317, 1535613502550, 1535613502569, 1535613502584, 1535613502600, 1535613502617, 1535613502634, 1535613502650, 1535613502667, 1535613502683, 1535613502700, 1535613502717],
+    "p": [0.5, 0.7550510257216823, 0.7681880209236327, 0.6829846120277299, 0.6829846120277299, 0.665629847511789, 0.6676543814462531, 0.7993507587287858, 0.7993507587287858, 0.7145158745241171, 0.6761535882018319, 0.6761535882018319, 0.7145158745241171, 0.57540894525061, 0.8024894359144054, 0.6829846120277299, 0.7941045496521526, 0.7681880209236327, 0.7461846839143089, 0.7461846839143089, 0.7531128489300326, 0.7461846839143089, 0.6831899108492184, 0.5544729722982094, 0.6636414338985142, 0.6127016653792583, 0.6636414338985142, 0.683772233983162, 0.8105224395454083, 0.774350629289587, 0.6739609561304866, 0.7436746598382117, 0.774350629289587, 0.7007103955941203],
+    "l": [0, 6, 12.082762530298218, 22.13263815141911, 32.18251377254, 43.36285366003895, 54.40821467722621, 62.40821467722621, 70.40821467722621, 74.40821467722621, 77.40821467722621, 80.40821467722621, 84.40821467722621, 102.43597105454616, 110.68218230578148, 120.73205792690237, 128.3478310327663, 134.43059356306452, 139.5296130766573, 144.6286325902501, 150.01379739738462, 155.11281691097741, 158.2750945711458, 178.124527812425, 189.43823631140975, 204.43823631140975, 215.75194481039452, 225.75194481039452, 234.6962167203937, 241.09934095782654, 251.72948677056118, 256.72948677056115, 263.132611007994, 266.738162283458],
+    "width": 1.8897637795275593,
+    "pointerType": "mouse",
+    "pointerId": 1,
+    "color": "#000000",
+    "-myscript-pen-width": 1,
+    "-myscript-pen-fill-style": "none",
+    "-myscript-pen-fill-color": "#FFFFFF00"
+  }]
+}]
+  </textarea>
+
+</div>
+<div id="result">
+  <div id='interpretatedTextContent'></div>
+  <div id='interpretatedImageContent'></div>
+
+</div>
+<button id="recognize" class="btn">Recognize</button>
+<script>
+  const convertBlobToBase64 = (blob) => new Promise((resolve, reject) => {
+    const reader = new FileReader;
+    reader.onerror = reject;
+    reader.onload = () => {
+      resolve(reader.result);
+    };
+    reader.readAsDataURL(blob);
+  });
+  document.querySelector('#recognize')
+    .addEventListener('click', () => {
+
+      // Creating a recognizer
+      const iinkRecognizer = MyScript.DefaultBehaviors.recognizerList.find(x => {
+        const infos = x.getInfo();
+        return infos.apiVersion === 'V4' && infos.protocol === 'REST';
+      });
+
+      // Creating a empty model
+      const model = MyScript.InkModel.createModel();
+      // Filling the model with the stroke groups
+      model.strokeGroups = JSON.parse(document.querySelector('#rawStrokesT').value);
+
+      // Creating a recognizer context with the configuration attached
+      const recognizerContext = MyScript.RecognizerContext.createEmptyRecognizerContext({
+        configuration: MyScript.DefaultConfiguration
+      });
+      //const mimeType = 'application/vnd.myscript.jiix';
+      const requestedMimeType = ['text/plain', 'image/png'];
+      recognizerContext.editor.configuration.recognitionParams.protocol = 'REST';
+      recognizerContext.editor.configuration.recognitionParams.v4.text.mimeTypes = requestedMimeType;
+      recognizerContext.editor.configuration.recognitionParams.server = {
+        scheme: 'https',
+        host: 'webdemoapi.myscript.com',
+        applicationKey: '515131ab-35fa-411c-bb4d-3917e00faf60',
+        hmacKey: '54b2ca8a-6752-469d-87dd-553bb450e9ad'
+      };
+
+      // Assigning a theme to the document
+      recognizerContext.editor.theme = MyScript.DefaultTheme;
+
+      // Defining the behaviour on recognition result
+      const recognitionCallback = (err, x) => {
+        if (!err) {
+          Object.entries(x.exports)
+            .forEach(([mimeType, exportValue]) => {
+              if (mimeType.startsWith('image/')) {
+                convertBlobToBase64(exportValue)
+                  .then(b64 => {
+                    document.querySelector('#interpretatedImageContent').innerHTML = "<img>";
+                    document.querySelector('#interpretatedImageContent > img').src = b64;
+                  })
+                  .catch((error) => {
+                    console.log("Unable to convert to base 64")
+                  });
+              } else {
+                document.querySelector('#interpretatedTextContent').innerHTML = JSON.stringify(x.exports[mimeType]);
+              }
+            });
+        }
+      };
+
+      // Triggering the recognition
+      iinkRecognizer.export_(recognizerContext, model, recognitionCallback);
+
+    });
+
+</script>
+</body>
+
+</html>

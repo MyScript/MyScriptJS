@@ -77,7 +77,8 @@ function xhr(type, url, data, recognizerContext = {}, apiVersion, mimeType) {
       request.setRequestHeader('Content-Type', 'application/json');
     }
 
-    if (mimeType === pptxMimeType) {
+    const isBlobType = mimeType === pptxMimeType || mimeType.startsWith('image/png') || mimeType.startsWith('image/jpeg');
+    if (isBlobType) {
       request.responseType = 'blob';
     }
 
@@ -87,7 +88,7 @@ function xhr(type, url, data, recognizerContext = {}, apiVersion, mimeType) {
 
     request.onload = () => {
       if (request.status >= 200 && request.status < 300) {
-        mimeType === pptxMimeType ? resolve(request.response) : resolve(parse(request));
+        isBlobType ? resolve(request.response) : resolve(parse(request));
       } else {
         reject(new Error(request.responseText));
       }
@@ -96,7 +97,7 @@ function xhr(type, url, data, recognizerContext = {}, apiVersion, mimeType) {
     request.onreadystatechange = () => {
       if (request.readyState === 4) {
         if (request.status >= 200 && request.status < 300) {
-          mimeType === pptxMimeType ? resolve(request.response) : resolve(parse(request));
+          isBlobType ? resolve(request.response) : resolve(parse(request));
         }
       }
     };

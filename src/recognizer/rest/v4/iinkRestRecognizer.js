@@ -46,16 +46,17 @@ export function getInfo() {
  */
 export function postMessage(suffixUrl, recognizerContext, model, buildMessage, conversionState = '', mimeType) {
   const configuration = recognizerContext.editor.configuration;
-  return NetworkInterface.post(recognizerContext, `${configuration.recognitionParams.server.scheme}://${configuration.recognitionParams.server.host}${suffixUrl}`, buildMessage(recognizerContext, model, conversionState), 'V4', mimeType).then((response) => {
-    logger.debug('iinkRestRecognizer success', response);
-    const positions = recognizerContext.lastPositions;
-    positions.lastReceivedPosition = positions.lastSentPosition;
-    const recognizerContextReference = RecognizerContext.updateRecognitionPositions(recognizerContext, positions);
-    if (response.instanceId) {
-      recognizerContextReference.instanceId = response.instanceId;
-    }
-    return response;
-  });
+  return NetworkInterface.post(recognizerContext, `${configuration.recognitionParams.server.scheme}://${configuration.recognitionParams.server.host}${suffixUrl}`, buildMessage(recognizerContext, model, conversionState), 'V4', mimeType)
+    .then((response) => {
+      logger.debug('iinkRestRecognizer success', response);
+      const positions = recognizerContext.lastPositions;
+      positions.lastReceivedPosition = positions.lastSentPosition;
+      const recognizerContextReference = RecognizerContext.updateRecognitionPositions(recognizerContext, positions);
+      if (response.instanceId) {
+        recognizerContextReference.instanceId = response.instanceId;
+      }
+      return response;
+    });
 }
 
 function buildTextConf(configuration) {
@@ -116,18 +117,23 @@ function buildData(recognizerContext, model, conversionState) {
     newStrokes.push(newGroup);
   });
 
-  const contentType = configuration.recognitionParams.type === 'Raw Content' ? 'Raw Content' : configuration.recognitionParams.type.charAt(0).toUpperCase() + configuration.recognitionParams.type.slice(1).toLowerCase();
+  const contentType = configuration.recognitionParams.type === 'Raw Content' ? 'Raw Content' : configuration.recognitionParams.type.charAt(0)
+    .toUpperCase() + configuration.recognitionParams.type.slice(1)
+    .toLowerCase();
 
   const data = {
     configuration: dataConf,
     xDPI: 96,
     yDPI: 96,
     contentType,
-    height: recognizerContext.editor.domElement.clientHeight,
-    width: recognizerContext.editor.domElement.clientWidth,
     theme: DefaultTheme.toCSS(recognizerContext.editor.theme),
     strokeGroups: newStrokes
   };
+
+  if (recognizerContext.editor.domElement) {
+    data.height = recognizerContext.editor.domElement.clientHeight;
+    data.width = recognizerContext.editor.domElement.clientWidth;
+  }
 
   if (conversionState) {
     data.conversionState = 'DIGITAL_EDIT';
@@ -139,32 +145,7 @@ function buildData(recognizerContext, model, conversionState) {
 
 function extractExports(configuration, mimeType, res) {
   const exports = {};
-  if (mimeType === 'application/vnd.myscript.jiix') {
-    exports['application/vnd.myscript.jiix'] = res;
-  }
-  if (configuration.recognitionParams.type === 'TEXT' && mimeType === 'text/plain') {
-    exports['text/plain'] = res;
-  } else if (configuration.recognitionParams.type === 'DIAGRAM') {
-    if (mimeType === 'image/svg+xml') {
-      exports['image/svg+xml'] = res;
-    }
-    if (mimeType === 'application/vnd.openxmlformats-officedocument.presentationml.presentation') {
-      exports['application/vnd.openxmlformats-officedocument.presentationml.presentation'] = res;
-    }
-    if (mimeType === 'application/vnd.microsoft.art-gvml-clipformat') {
-      exports['application/vnd.microsoft.art-gvml-clipformat'] = res;
-    }
-  } else if (configuration.recognitionParams.type === 'MATH') {
-    if (mimeType === 'application/x-latex') {
-      exports['application/x-latex'] = res;
-    }
-    if (mimeType === 'application/mathml+xml') {
-      exports['application/mathml+xml'] = res;
-    }
-    if (mimeType === 'application/mathofficeXML') {
-      exports['application/mathofficeXML'] = res;
-    }
-  }
+  exports[mimeType] = res;
   return exports;
 }
 
@@ -186,17 +167,26 @@ function resultCallback(model, configuration, res, mimeType, callback) {
  * @param {RecognizerContext} recognizerContext Current recognizer context
  * @param {Model} model Current model
  * @param {RecognizerCallback} callback
+ * @param {Array[String]} requestedMimeTypes
  */
-export function export_(recognizerContext, model, callback) {
+export function export_(recognizerContext, model, callback, requestedMimeTypes) {
   const configuration = recognizerContext.editor.configuration;
 
   function callPostMessage(mimeType) {
     postMessage('/api/v4.0/iink/batch', recognizerContext, model, buildData, configuration.restConversionState, mimeType)
-      .then(res => resultCallback(model, configuration, res, mimeType, callback))
-      .catch(err => callback(err, model));
+      .then((res) => {
+        resultCallback(model, configuration, res, mimeType, callback);
+      })
+      .catch((err) => {
+        callback(err, model);
+      });
   }
 
-  if (configuration.recognitionParams.type === 'TEXT') {
+  if (requestedMimeTypes) {
+    requestedMimeTypes.forEach((mimeType) => {
+      callPostMessage(mimeType);
+    });
+  } else if (configuration.recognitionParams.type === 'TEXT') {
     configuration.recognitionParams.v4.text.mimeTypes.forEach((mimeType) => {
       callPostMessage(mimeType);
     });
