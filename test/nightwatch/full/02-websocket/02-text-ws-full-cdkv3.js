@@ -3,7 +3,7 @@ const config = require('../../../lib/configuration').getConfiguration('TEXT', 'W
 
 function runInkTests(ink) {
   module.exports[config.header + ' checkLabels ' + ink.name] = function checkLabels(browser) {
-    inkPlayer.checkLabels(browser, config, ink.strokes, ink.labels, '#editor', '[data-key=TEXT]');
+    inkPlayer.checkLabels(browser, config, ink.strokes, ink.exports.TEXT, '#editor', '[data-key=TEXT]');
   };
 
   module.exports[config.header + ' checkUndoRedo ' + ink.name] = function checkUndoRedo(browser) {

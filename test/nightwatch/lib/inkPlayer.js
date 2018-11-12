@@ -20,8 +20,8 @@ function checkTextNonText(browser, resultSelector) {
     browser.waitForElementPresent(resultSelector, 6000 * globalconfig.timeoutAmplificator);
   }
   browser.getJiixExports(function (res) {
-    //console.log('export res: ' + JSON.stringify(res.value));
-    const parsedjiix = JSON.parse(res.value);
+    console.log('export res: ' + JSON.stringify(res.value));
+    const parsedjiix = JSON.parse(JSON.stringify(res.value));
 
     browser.verify.equal(parsedjiix.type, "Raw Content");
     browser.verify.equal(parsedjiix.elements.length > 0, true);
@@ -89,6 +89,8 @@ function checkLabels(browser, config, strokes, labels, component = '#editor', re
 
 function checkUndoRedo(browser, config, strokes, labels, component = '#editor', resultSelector = '#editorSupervisor', emptyResultSelector = '#editorSupervisor') {
   console.log('url ' +  browser.launchUrl + config.componentPath);
+  console.log('strokes length= ' + strokes.length);
+  console.log('final label= ' + JSON.stringify(labels));
   const isWebSocketV4 = (config.apiVersion === 'V4' && config.protocol !== 'REST');
   browser
     .init(browser.launchUrl + config.componentPath).maximizeWindow()
@@ -250,6 +252,63 @@ function checkSmartGuide(browser, config, strokes, labels, component = '#editor'
   });
 }
 
+function checkDecoration(browser, config, inkName, strokes, labels, component = '#editor', resultSelector = '#editorSupervisor', emptyResultSelector = '#editorSupervisor') {
+  console.log('url ' +  browser.launchUrl + config.componentPath)
+  const isWebSocketV4 = (config.apiVersion === 'V4' && config.protocol !== 'REST');
+  browser
+    .init(browser.launchUrl + config.componentPath).maximizeWindow()
+    .waitForElementVisible(component, 1000 * globalconfig.timeoutAmplificator)
+    .listenEditor()
+    .waitForElementPresent('#editorSupervisor', 1000 * globalconfig.timeoutAmplificator)
+    .waitUntilElementPropertyEqual('#editorSupervisor', 'unloaded', false, 3000 * globalconfig.timeoutAmplificator);
+
+  strokes.forEach((stroke, i) => {
+    browser
+      .playStrokes(component, [stroke], 100, 100, 1000 * globalconfig.timeoutAmplificator)
+      //.waitUntilElementPropertyEqual('#editorSupervisor', 'nbstrokes', i + 1, 3000 * globalconfig.timeoutAmplificator)
+      .waitUntilElementPropertyEqual('#editorSupervisor', 'state', 'EXPORTED', 3000 * globalconfig.timeoutAmplificator);
+
+    checkLabel(browser, labels, i, resultSelector, emptyResultSelector);
+  });
+
+  if(isWebSocketV4) {
+
+    browser.getAttribute('.smartguide', 'id', (res) => {
+      const randomString = res.value.replace('smartguide', '');
+      browser
+        .click(`#ellipsis${randomString}`)
+        .click(`#convert${randomString}`)
+        .waitForIdle('#editorSupervisor', 3000 * globalconfig.timeoutAmplificator);
+      //.waitUntilElementPropertyEqual('#editorSupervisor', 'nbstrokes', 0, 3000 * globalconfig.timeoutAmplificator);
+    });
+
+    checkLabel(browser, labels, strokes.length - 1, resultSelector, emptyResultSelector);
+
+    browser.pause(1000);
+
+    browser.getJiixExports(function (res) {
+      console.log('export= ' + JSON.stringify(res.value));
+      var spansList = common.findValuesByKey(res.value, 'spans');
+      browser.verify.equal(spansList.length, 2);
+      console.log("span0 string= " + JSON.stringify(spansList[0]));
+      var span0 = JSON.parse(JSON.stringify(spansList[0]));
+      console.log("span0= "+ JSON.stringify(span0));
+      browser.verify.equal(span0["first-char"], "0");
+      browser.verify.equal(span0["last-char"], "5");
+      browser.verify.equal(span0.class, "text");
+      var span1 = JSON.parse(JSON.stringify(spansList[1]));
+      browser.verify.equal(span1["first-char"], "6");
+      browser.verify.equal(span1["last-char"], "8");
+      if(inkName.includes("Highlighted"))
+        browser.verify.equal(span1.class, "text text-highlight");
+      else
+        browser.verify.equal(span1.class, "text text-emphasis1");
+    });
+  }
+  browser.end();
+}
+
+
 function checkUndoRedoReconnect(browser, config, strokes, labels, component = '#editor', resultSelector = '#editorSupervisor', emptyResultSelector = '#editorSupervisor') {
   console.log('url ' +  browser.launchUrl + config.componentPath);
   const isWebSocketV4 = (config.apiVersion === 'V4' && config.protocol !== 'REST');
@@ -345,13 +404,18 @@ function checkAlwaysConnected(browser, config, strokes, labels, component = '#ed
   checkNbStrokes(browser, config, resultSelector, 'nbstrokes', strokes.length);
   checkLabel(browser, labels, strokes.length - 1, resultSelector, emptyResultSelector);
 
-
+  for (let i = 1; i < 11; i++) {
+    browser.pause(30000, () => {
+      console.log("wait time = " + 30 * i + "s");
+    });
+  }
   browser
-    .pause(310000) // 5mn 10 seconds
+    .pause(10000) // + 10 seconds -> 5mn 10 seconds in total
     .click('#clear')
-    //.waitUntilElementPropertyEqual('#editorSupervisor', 'nbstrokes', isWebSocketV4 ? strokes.length : 0, 3000 * globalconfig.timeoutAmplificator);
+    .pause(2000);
+  //.waitUntilElementPropertyEqual('#editorSupervisor', 'nbstrokes', isWebSocketV4 ? strokes.length : 0, 3000 * globalconfig.timeoutAmplificator);
 
-  checkNbStrokes(browser, config, resultSelector, 'nbstrokes', 0);
+  //checkNbStrokes(browser, config, resultSelector, 'nbstrokes', 0);
   checkLabel(browser, labels, -1, resultSelector, emptyResultSelector);
 
   browser
@@ -359,7 +423,7 @@ function checkAlwaysConnected(browser, config, strokes, labels, component = '#ed
     //.waitUntilElementPropertyEqual('#editorSupervisor', 'nbstrokes', isWebSocketV4 ? strokes.length + strokes.length + 1 : strokes.length, 3000 * globalconfig.timeoutAmplificator)
     .waitUntilElementPropertyEqual('#editorSupervisor', 'state', 'EXPORTED', 3000 * globalconfig.timeoutAmplificator);
 
-  checkNbStrokes(browser, config, resultSelector, 'nbstrokes', strokes.length);
+  //checkNbStrokes(browser, config, resultSelector, 'nbstrokes', strokes.length);
   checkLabel(browser, labels, strokes.length - 1, resultSelector, emptyResultSelector);
 
 
@@ -459,6 +523,7 @@ module.exports = {
   checkUndoRedo,
   checkConvert,
   checkSmartGuide,
+  checkDecoration,
   checkUndoRedoReconnect,
   checkAlwaysConnected,
   checkRawContent,

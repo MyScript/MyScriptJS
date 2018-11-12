@@ -3,9 +3,9 @@ const config = require('../../../lib/configuration').getConfiguration('MATH', 'W
 const configImport = require('../../../lib/configuration').getConfiguration('MATH', 'WEBSOCKET', 'V4', '', 'import');
 
 function runLabelTests(ink) {
-  // module.exports[config.header + ' checkConvert ' + ink.name] = function checkConvert(browser) {
-  //   inkPlayer.checkConvert(browser, config, ink.strokes, ink.exports.LATEX, '#editor', '[data-key="application/x-latex"]');
-  // };
+  module.exports[config.header + ' checkConvert ' + ink.name] = function checkConvert(browser) {
+    inkPlayer.checkConvert(browser, config, ink.strokes, ink.exports.LATEX, '#editor', '[data-key="application/x-latex"]');
+  };
   module.exports[config.header + ' checkLabels ' + ink.name] = function checkLabels(browser) {
     inkPlayer.checkLabels(browser, config, ink.strokes, ink.exports.LATEX, '#editor', '[data-key="application/x-latex"]');
   };
@@ -31,9 +31,9 @@ config.inks
   .filter(ink => ['equation3'].includes(ink.name))
   .forEach(ink => runLabelTests(ink));
 
-// config.inks
-//   .filter(ink => ['equation3'].includes(ink.name))
-//   .forEach(ink => runUndoTests(ink));
+config.inks
+  .filter(ink => ['equation3'].includes(ink.name))
+  .forEach(ink => runUndoTests(ink));
 
 
 configImport.inks

@@ -10,6 +10,8 @@ const threetimes2 = require('./inks/3times2.json');
 const rabText = require('./inks/rabText.json');
 const hello = require('./inks/hello.json');
 const helloHow = require('./inks/helloHowAreYou.json');
+const helloHowHighlighted = require('./inks/highlighted.json');
+const helloHowEmphasized = require('./inks/emphasized.json');
 const shape = require('./inks/shape.json');
 const fourSquare = require('./inks/fourSquare.json');
 const music = require('./inks/music.json');
@@ -44,7 +46,7 @@ const inks = [{
   strokes: equation2,
   apiVersion: '',
   exports: {
-    LATEX: ['\\sqrt {}', '\\sqrt {2}', 'r', '']
+    LATEX: ['-', '\\sqrt {2}', 'r', '']
   }
 }, {
   name: 'equation3',
@@ -118,6 +120,22 @@ const inks = [{
   apiVersion: '',
   exports: {
     TEXT: ['hello', 'hello how', 'hello how o', 'hello how are', 'hello how are you', 'hello how are you?', 'hello how are you?']
+  }
+}, {
+  name: 'helloHowDecoHighlighted',
+  type: 'TEXT',
+  strokes: helloHowHighlighted,
+  apiVersion: 'V4',
+  exports: {
+    TEXT: ['hello', 'hello how', 'hello how']
+  }
+}, {
+  name: 'helloHowDecoEmphasized',
+  type: 'TEXT',
+  strokes: helloHowEmphasized,
+  apiVersion: 'V4',
+  exports: {
+    TEXT: ['hello', 'hello how', 'hello how']
   }
 }, {
   name: 'rabText',
@@ -248,6 +266,12 @@ const configurations = [{
   apiVersion: 'V4',
   alternate: 'RAB',
   examples: ['/examples/v4/custom_lexicon_text.html'],
+}, {
+  type: 'TEXT',
+  protocol: 'WEBSOCKET',
+  apiVersion: 'V4',
+  alternate: 'Decoration',
+  examples: ['/examples/v4/websocket_text_iink_decoration.html'],
 }, {
   type: 'TEXT',
   protocol: 'REST',

@@ -1,5 +1,5 @@
 const inkPlayer = require('../../lib/inkPlayer');
-const config = require('../../../lib/configuration').getConfiguration('RAW-CONTENT', 'REST', 'V4');
+const config = require('../../../lib/configuration').getConfiguration('Raw Content', 'REST', 'V4');
 
 function runInkTests(ink) {
   module.exports[config.header + ' checkRawContent ' + ink.name] = function checkRawContent(browser) {
@@ -8,4 +8,5 @@ function runInkTests(ink) {
 };
 
 config.inks
+  //.filter(ink => ['fourSquare'].includes(ink.name))
   .forEach(ink => runInkTests(ink));

@@ -1,11 +1,12 @@
 const inkPlayer = require('../../lib/inkPlayer');
 const config = require('../../../lib/configuration').getConfiguration('TEXT', 'WEBSOCKET', 'V4');
+const configDecoration = require('../../../lib/configuration').getConfiguration('TEXT', 'WEBSOCKET', 'V4', '', 'Decoration');
 
 function runInkTests(ink) {
   // module.exports[config.header + ' checkUndoRedo ' + ink.name] = function checkUndoRedo(browser) {
   //   inkPlayer.checkUndoRedo(browser, config, ink.strokes, ink.exports.TEXT, '#editor', '[data-key="text/plain"]');
   // };
-
+  //
   // module.exports[config.header + ' checkConvert ' + ink.name] = function checkConvert(browser) {
   //   inkPlayer.checkConvert(browser, config, ink.strokes, ink.exports.TEXT, '#editor', '[data-key="text/plain"]');
   // };
@@ -18,6 +19,17 @@ function runInkTests(ink) {
   };
 }
 
+function runDecorationTest(ink) {
+  module.exports[configDecoration.header + ' checkDecoration ' + ink.name] = function checkDecoration(browser) {
+    inkPlayer.checkDecoration(browser, configDecoration, ink.name, ink.strokes, ink.exports.TEXT, '#editor', '[data-key="text/plain"]');
+  };
+}
+
+
 config.inks
   .filter(ink => ['hello', 'helloHow'].includes(ink.name))
   .forEach(ink => runInkTests(ink));
+
+configDecoration.inks
+  .filter(ink => ink.name.includes('helloHowDeco'))
+  .forEach(ink => runDecorationTest(ink));
