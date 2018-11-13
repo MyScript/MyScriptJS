@@ -41,48 +41,88 @@
             <img src="../assets/img/redo.svg">
           </button>
         </div>
-        <div class="spacer"></div>
-        <button class="classic-btn" id="exportContent" disabled>Export to docx file</button>
+
+        <div class="style-flex-item">
+          <select id="exportType"></select>
+        </div>
+        <button class="classic-btn" id="exportContent" disabled>Export to file</button>
       </nav>
       <div id="editor"></div>
     </div>
     <script>
 
-      const wordMimeType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
-      var editorElement = document.getElementById('editor');
-      var undoElement = document.getElementById('undo');
-      var redoElement = document.getElementById('redo');
-      var clearElement = document.getElementById('clear');
-      var exportElement = document.getElementById('exportContent');
+      const editorElement = document.getElementById('editor');
+      const undoElement = document.getElementById('undo');
+      const redoElement = document.getElementById('redo');
+      const clearElement = document.getElementById('clear');
+      const exportElement = document.getElementById('exportContent');
 
       editorElement.addEventListener('changed', function (event) {
         undoElement.disabled = !event.detail.canUndo;
         redoElement.disabled = !event.detail.canRedo;
-        exportElement.disabled = !event.detail.canExport;
+        exportElement.disabled = event.detail.isEmpty;
         clearElement.disabled = event.detail.isEmpty;
       });
 
-      var base64toBlob = function(data) {
-        var byteCharacters = window.atob(data);
-        var byteNumbers = new Array(byteCharacters.length);
-        for (var i = 0; i < byteCharacters.length; i++) {
+      const toBlob = (data, mimeType) => new Blob([data], {type: mimeType});
+
+      const base64toBlob = (data, mimeType) => {
+        const byteCharacters = window.atob(data);
+        const byteNumbers = new Array(byteCharacters.length);
+        for (let i = 0; i < byteCharacters.length; i++) {
           byteNumbers[i] = byteCharacters.charCodeAt(i);
         }
-        var byteArray = new Uint8Array(byteNumbers);
-        return new Blob([byteArray], {type: wordMimeType});
-
+        const byteArray = new Uint8Array(byteNumbers);
+        return toBlob(byteArray, mimeType);
       };
 
+
+      const exportFileType = {
+        'word': {
+          mimeType:'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+          transform: base64toBlob,
+          name: 'Word (docx)',
+          extension: 'docx'
+        },
+        'html': {
+          mimeType: 'text/html',
+          name: 'HTML',
+          transform: toBlob,
+          extension: 'html'
+        },
+        'png': {
+          mimeType: 'image/png',
+          transform: base64toBlob,
+          name: 'PNG',
+          extension: 'png'
+        },
+        'jpeg': {
+          mimeType: 'image/jpeg',
+          transform: base64toBlob,
+          name: 'JPEG',
+          extension: 'jpg'
+        }
+      };
+
+      const selectElement = document.getElementById("exportType");
+      for (const exportType in exportFileType) {
+        const optionElement = document.createElement('option');
+        optionElement.value = exportType;
+        optionElement.innerText = exportFileType[exportType].name;
+        selectElement.appendChild(optionElement);
+      }
+
       editorElement.addEventListener('exported', function (evt) {
-        if (evt.detail && evt.detail.exports[wordMimeType]) {
-          var aa = document.createElement("a");
-          var blobUrl = URL.createObjectURL(base64toBlob(evt.detail.exports[wordMimeType]));
-          aa.href = blobUrl;
-          aa.download = "myDocument.docx";
+        const fileType = exportFileType[selectElement.options[selectElement.selectedIndex].value];
+        if (evt.detail && evt.detail.exports && evt.detail.exports[fileType.mimeType]) {
+          const aa = document.createElement("a");
+          const url = URL.createObjectURL(fileType.transform(evt.detail.exports[fileType.mimeType]), fileType.mimeType);
+          aa.href = url;
+          aa.download = "myDocument." + fileType.extension;
           document.body.appendChild(aa);
           aa.click();
           aa.remove();
-          URL.revokeObjectURL(blobUrl);
+          URL.revokeObjectURL(url);
 
         }
       });
@@ -96,8 +136,8 @@
         editorElement.editor.clear();
       });
       exportElement.addEventListener('click', function () {
-        exportElement.disabled = true;
-        editorElement.editor.export_([wordMimeType, 'application/vnd.myscript.jiix']);
+        const mimeType = exportFileType[selectElement.options[selectElement.selectedIndex].value].mimeType;
+        editorElement.editor.export_([mimeType, 'application/vnd.myscript.jiix']);
       });
 
       /**
