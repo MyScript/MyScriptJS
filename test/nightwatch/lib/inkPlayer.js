@@ -494,9 +494,6 @@ function checkImport(browser, config, strokes, labels, component = '#editor', re
   checkLabel(browser, labels, strokes.length - 1, resultSelector, emptyResultSelector);
 
   browser.getJiixExports(function (res) {
-    const parsedjiix = JSON.parse(res.value);
-    jiixExport = parsedjiix;
-
     browser
       .click('#clear')
       .waitForIdle('#editorSupervisor', 3000 * globalconfig.timeoutAmplificator);
@@ -506,7 +503,7 @@ function checkImport(browser, config, strokes, labels, component = '#editor', re
     browser
       .waitForElementPresent('#importContentField', 1000 * globalconfig.timeoutAmplificator)
       .waitForElementPresent('#importContent', 1000 * globalconfig.timeoutAmplificator)
-      .setProperty('#importContentField', 'value', JSON.stringify(jiixExport))
+      .setProperty('#importContentField', 'value', JSON.stringify(res.value))
       .click("#importContent")
       .waitForIdle('#editorSupervisor', 3000 * globalconfig.timeoutAmplificator)
       .waitUntilElementPropertyEqual('#editorSupervisor', 'state', 'EXPORTED', 2000 * globalconfig.timeoutAmplificator);

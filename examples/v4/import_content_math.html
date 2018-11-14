@@ -63,7 +63,7 @@
     editorElement.editor.clear();
   });
   importContentElement.addEventListener('click', function () {
-    const value = importContentField.value.replace('\\n', '');
+    const value = JSON.parse(importContentField.value);
     editorElement.editor.import_(value, importContentField.dataset.type);
   });
 
@@ -72,7 +72,7 @@
    * @param {Element} The DOM element to attach the ink paper
    * @param {Object} The recognition parameters
    */
-  const editor = MyScript.register(editorElement, {
+  MyScript.register(editorElement, {
     recognitionParams: {
       type: 'MATH',
       protocol: 'WEBSOCKET',

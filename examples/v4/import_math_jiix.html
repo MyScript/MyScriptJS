@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="HandheldFriendly" content="true"/>
+
+  <title>Import math with Jiix</title>
+
+  <link rel="stylesheet" href="../../dist/myscript.min.css"/>
+  <link rel="stylesheet" href="../examples.css">
+
+  <script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
+  <script type="text/javascript" src="../../dist/myscript.min.js"></script>
+
+  <style>
+    #editor, #editor2 {
+      border: 1px solid #D7DDE3;
+      height: calc(50vh - 152px);
+      margin: 20px 0;
+    }
+    #editor2 {
+      background-color: rgba(215,221,227,.3);
+    }
+    #informations {
+      position: absolute;
+      font-size: initial;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  </style>
+</head>
+<body>
+<div>
+  <nav>
+    <div class="button-div">
+      <button id="undo" class="nav-btn btn-fab-mini btn-lightBlue" disabled>
+        <img src="../assets/img/undo.svg">
+      </button>
+      <button id="redo" class="nav-btn btn-fab-mini btn-lightBlue" disabled>
+        <img src="../assets/img/redo.svg">
+      </button>
+      <div class="spacer"></div>
+    </div>
+    <div>
+      <button class="classic-btn" id="convert" disabled>Convert</button>
+      <button class="classic-btn" id="import">Import</button>
+    </div>
+  </nav>
+  <main id="mainContent">
+  </main>
+  <div id="editor" touch-action="none"></div>
+  <div id="editor2" touch-action="none">
+    <div id="informations">
+      <p>This editor will only show what's imported</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  const editorELement1 = document.getElementById('editor');
+  const editorELement2 = document.getElementById('editor2');
+  const undoElement = document.getElementById('undo');
+  const redoElement = document.getElementById('redo');
+  const convertElement = document.getElementById('convert');
+  const importElement = document.getElementById('import');
+  const infosElement = document.getElementById('informations');
+
+  let toImport = null;
+
+  editorELement1.addEventListener('exported', (event) => {
+    const exports = event.detail.exports;
+    if(exports && exports['application/vnd.myscript.jiix']) {
+      toImport = exports['application/vnd.myscript.jiix'];
+    }
+  });
+
+  editorELement2.addEventListener('exported', () => {
+    if(toImport === null) {
+      editorELement2.editor.clear();
+      infosElement.style.visibility = 'visible';
+    }
+  });
+
+  convertElement.addEventListener('click', () => {
+    editorELement1.editor.convert();
+  });
+
+  importElement.addEventListener('click', () => {
+    if(toImport !== null) {
+      if(editorELement1.editor.isEmpty) {
+        editorELement2.editor.clear();
+        toImport = null;
+      } else {
+        infosElement.style.visibility = 'hidden';
+        editorELement2.editor.import_(toImport, 'application/vnd.myscript.jiix');
+      }
+    }
+  });
+
+  [editorELement1, editorELement2].forEach((editor) => {
+    editor.addEventListener('changed', (event) => {
+      undoElement.disabled = !event.detail.canUndo;
+      redoElement.disabled = !event.detail.canRedo;
+      convertElement.disabled = event.detail.isEmpty;
+    });
+
+    undoElement.addEventListener('click', () => {
+      registeredEditor.undo();
+    });
+    redoElement.addEventListener('click', () => {
+      registeredEditor.redo();
+    });
+
+    window.addEventListener('resize', () => {
+      registeredEditor.resize();
+    });
+
+    const registeredEditor = MyScript.register(editor, {
+      recognitionParams: {
+        type: 'MATH',
+        protocol: 'WEBSOCKET',
+        apiVersion: 'V4',
+        server: {
+          scheme: 'https',
+          host: 'webdemoapi.myscript.com',
+          applicationKey: '515131ab-35fa-411c-bb4d-3917e00faf60',
+          hmacKey: '54b2ca8a-6752-469d-87dd-553bb450e9ad'
+        },
+        v4: {
+          alwaysConnected: true,
+          math: {
+            mimeTypes: ['application/vnd.myscript.jiix', 'application/x-latex']
+          }
+        }
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
