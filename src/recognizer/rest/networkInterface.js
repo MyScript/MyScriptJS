@@ -77,7 +77,7 @@ function xhr(type, url, data, recognizerContext = {}, apiVersion, mimeType) {
       request.setRequestHeader('Content-Type', 'application/json');
     }
 
-    const isBlobType = mimeType === pptxMimeType || mimeType.startsWith('image/png') || mimeType.startsWith('image/jpeg');
+    const isBlobType = mimeType && (mimeType === pptxMimeType || mimeType.startsWith('image/png') || mimeType.startsWith('image/jpeg'));
     if (isBlobType) {
       request.responseType = 'blob';
     }
