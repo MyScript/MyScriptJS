@@ -90,7 +90,6 @@ function checkLabels(browser, config, strokes, labels, component = '#editor', re
 function checkUndoRedo(browser, config, strokes, labels, component = '#editor', resultSelector = '#editorSupervisor', emptyResultSelector = '#editorSupervisor') {
   console.log('url ' +  browser.launchUrl + config.componentPath);
   console.log('strokes length= ' + strokes.length);
-  console.log('final label= ' + JSON.stringify(labels));
   const isWebSocketV4 = (config.apiVersion === 'V4' && config.protocol !== 'REST');
   browser
     .init(browser.launchUrl + config.componentPath).maximizeWindow()
@@ -294,7 +293,7 @@ function checkDecoration(browser, config, inkName, strokes, labels, component = 
       var span0 = JSON.parse(JSON.stringify(spansList[0]));
       console.log("span0= "+ JSON.stringify(span0));
       browser.verify.equal(span0["first-char"], "0");
-      browser.verify.equal(span0["last-char"], "5");
+      browser.verify.equal(span0["last-char"], "4");
       browser.verify.equal(span0.class, "text");
       var span1 = JSON.parse(JSON.stringify(spansList[1]));
       browser.verify.equal(span1["first-char"], "6");

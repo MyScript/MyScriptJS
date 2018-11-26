@@ -271,7 +271,7 @@ const configurations = [{
   protocol: 'WEBSOCKET',
   apiVersion: 'V4',
   alternate: 'Decoration',
-  examples: ['/examples/v4/websocket_text_iink_decoration.html'],
+  examples: ['/examples/v4/highlight_words.html'],
 }, {
   type: 'TEXT',
   protocol: 'REST',
