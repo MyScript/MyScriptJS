@@ -43,7 +43,7 @@ import Constants from '../configuration/Constants';
  * @property {function(recognizerContext: RecognizerContext, model: Model, callback: RecognizerCallback)} close Close and free all resources that will no longer be used by the recognizer.
  * @property {function(recognizerContext: RecognizerContext, model: Model, callback: RecognizerCallback)} [undo] Undo Undo the last done action.
  * @property {function(recognizerContext: RecognizerContext, model: Model, callback: RecognizerCallback)} [redo] Redo Redo the previously undone action.
- * @property {function(recognizerContext: RecognizerContext, model: Model, element: Element, callback: RecognizerCallback)} [resize] Resize.
+ * @property {function(recognizerContext: RecognizerContext, model: Model, callback: RecognizerCallback, element: Element)} [resize] Resize.
  * @property {function(recognizerContext: RecognizerContext, model: Model, strokes: Array<Stroke>, callback: RecognizerCallback)} [pointerEvents] Pointer Events.
  * @property {function(recognizerContext: RecognizerContext, model: Model, callback: RecognizerCallback)} [addStrokes] Add strokes.
  * @property {function(recognizerContext: RecognizerContext, model: Model, callback: RecognizerCallback)} [export_] Export content.

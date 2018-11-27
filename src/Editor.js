@@ -352,9 +352,9 @@ function launchResize(editor, model) {
         const editorRef = editor;
         window.clearTimeout(editor.resizeTimer);
         editorRef.resizeTimer = window.setTimeout(() => {
-          editor.recognizer.resize(editor.recognizerContext, model, editor.domElement, (err, res, ...types) => {
+          editor.recognizer.resize(editor.recognizerContext, model, (err, res, ...types) => {
             recognizerCallback(editor, err, res, ...types);
-          });
+          }, editor.domElement);
         }, editor.configuration.resizeTriggerDelay);
       });
     SmartGuide.resize(editor.smartGuide);

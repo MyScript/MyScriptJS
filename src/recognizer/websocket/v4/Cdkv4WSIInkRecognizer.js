@@ -503,16 +503,16 @@ export function waitForIdle(recognizerContext, model, callback) {
  * Resize
  * @param {RecognizerContext} recognizerContext Current recognition context
  * @param {Model} model Current model
- * @param {Element} element Current element
  * @param {RecognizerCallback} callback
+ * @param {Element} element Current element
  */
-export function resize(recognizerContext, model, element, callback) {
+export function resize(recognizerContext, model, callback, element) {
   const recognizerContextRef = RecognizerContext.setRecognitionContext(recognizerContext, {
     model,
     callback: (err, res) => iinkCallback(model, err, res, callback)
   });
   CdkWSRecognizerUtil.sendMessage(recognizerContextRef, buildResize, element, recognizerContext.editor.configuration.renderingParams.minHeight, recognizerContext.editor.configuration.renderingParams.minWidth)
-    .catch(exception => CdkWSRecognizerUtil.retry(resize, recognizerContext, model, callback));
+    .catch(exception => CdkWSRecognizerUtil.retry(resize, recognizerContext, model, callback, element));
 }
 
 /**
