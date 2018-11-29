@@ -1,6 +1,6 @@
 pipeline {
     agent any
-
+    options { disableConcurrentBuilds() }
     environment {
         PROJECTNAME = "myscriptjs ${env.BRANCH_NAME}"
         PROJECTHOME = '/tmp/myscriptjs'
