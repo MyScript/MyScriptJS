@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+  >
+  <meta
+    name="apple-mobile-web-app-capable"
+    content="yes"
+  >
+  <meta
+    name="mobile-web-app-capable"
+    content="yes"
+  >
+  <meta
+    name="HandheldFriendly"
+    content="true"
+  />
+
+  <title>Dynamic math part inside a page</title>
+
+  <link
+    rel="stylesheet"
+    href="../../dist/myscript.min.css"
+  />
+  <link
+    rel="stylesheet"
+    href="../examples.css"
+  >
+
+  <script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0/dist/katex.min.css" integrity="sha384-9eLZqc9ds8eNjO3TmqPeYcDj8n+Qfa4nuSiGYa6DjLNcv9BtN69ZIulL9+8CqC9Y" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0/dist/katex.min.js" integrity="sha384-K3vbOmF2BtaVai+Qk37uypf7VrgBubhQreNQe9aGsz9lB63dIFiQVlJbr92dw2Lx" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0/dist/contrib/auto-render.min.js" integrity="sha384-kmZOZB5ObwgQnS/DuDg6TScgOiWWBiVt0plIRkZCmE6rDZGrEOQeHM5PcHi+nyqe" crossorigin="anonymous"
+      onload="renderMathInElement(document.body, {displayMode : false});"></script>
+  <script
+    type="text/javascript"
+    src="../../dist/myscript.min.js"
+  ></script>
+
+  <style>
+    
+    :root {
+      --animation-duration: 600ms;
+    }
+
+    body {
+      margin: 20px;
+      font-size: 120%;
+    }
+
+    .textContent {
+      margin-top: 10px;
+      margin-bottom: 5px;
+      line-height: 2.2rem;
+    }
+
+    .mathContent {
+      background-color: lightgrey;
+      display:inline-block;
+    }
+
+  .katex-display {
+    margin: 0;
+  }
+  
+    #editorBox {
+      border: none;
+      background-color: lightgrey;
+      visibility: none;
+
+
+
+    }
+
+    nav {
+      border: none;
+      position: absolute;
+      width: 80%;
+      left: 10%;
+      top: calc(20% - 64px);
+      visibility: hidden;
+      opacity: 1;
+      background-color: #f2f2f3;
+      transition-delay: var(--animation-duration);
+      transition-property: visibility;
+      transition-duration: 150ms;
+    }
+
+    .visible {
+      visibility: visible !important;
+      z-index: 30 !important;
+      opacity: 1 !important;
+    }
+
+
+    .animateResize {
+      transition-property: left, top, width, height;
+      transition-duration: var(--animation-duration);
+    }
+
+    .editorPosition {
+      position: absolute;
+      left: 10vw !important;
+      top: calc(20% - 64px);
+      height: calc(60vh + 64px) !important;
+      width: 80vw !important;
+      z-index: 5 !important;
+    }
+
+    #editor,
+    #editor2 {
+      position: absolute;
+      left: 10vw !important;
+      top: 20vh !important;
+      height: 60vh !important;
+      width: 80vw !important;
+      z-index: 10 !important;
+      margin: 0;
+      visibility: hidden;
+      transition-delay: var(--animation-duration);
+      transition-property: visibility;
+      transition-duration: 150ms;
+      background-color: white;
+    }
+
+    #editor2 {
+      background-color: rgba(215, 221, 227, .3);
+    }
+
+
+
+    #informations {
+      position: absolute;
+      font-size: initial;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    #editorContainer {
+      visibility: hidden;
+      background-color: #80808085;
+      opacity: 0;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      transition-property: opacity;
+      transition-duration: 150ms;
+    }
+
+    #close {
+      /*position: absolute;
+      top: 10px;
+      right: 10px;*/
+      background-color: black !important;
+    }
+  </style>
+</head>
+
+<body>
+  <div>
+
+    <main id="mainContent">
+      <h2>Pythagorean theorem</h2>
+      <h3>Definition</h3>
+      <div class="textContent">
+        In mathematics, the Pythagorean theorem, also known as Pythagoras'
+        theorem, ... often called the
+        "Pythagorean equation".
+      </div>
+
+      <h3>Other forms of the theorem</h3>
+      <div class="textContent">
+        If c denotes the length of the hypotenuse and a and b denote the
+        lengths of the other two sides, the Pythagorean theorem can be
+        expressed as the Pythagorean equation:
+
+        <span class="mathContent" data-jiix='{"type":"Math","expressions":[{"type":"=","id":"math/169","items":[{"type":"glyph","timestamp":"2018-11-2900:26:48.028000","label":"=","bounding-box":{"x":111.76708,"y":54.288994,"width":12.429764,"height":5.6213264},"id":"00000f0001000700ff00"}],"operands":[{"type":"+","id":"math/69","items":[{"type":"glyph","timestamp":"2018-11-2900:26:44.860000","label":"+","bounding-box":{"x":71.38607,"y":50.902233,"width":12.412308,"height":12.412304},"id":"00000c0001000700ff00"}],"operands":[{"type":"superscript","id":"math/48","operands":[{"type":"symbol","id":"math/23","label":"a","items":[{"type":"glyph","timestamp":"2018-11-2900:26:42.681000","label":"a","bounding-box":{"x":48.947914,"y":53.136795,"width":9.6714706,"height":9.5318146},"id":"00000a0001000700ff00"}]},{"type":"number","id":"math/47","label":"2","value":2,"items":[{"type":"glyph","timestamp":"2018-11-2900:26:44.070000","label":"2","bounding-box":{"x":60.045666,"y":47.431675,"width":5.6352882,"height":8.557682},"id":"00000b0001000700ff00"}]}]},{"type":"superscript","id":"math/147","operands":[{"type":"symbol","id":"math/129","label":"b","items":[{"type":"glyph","timestamp":"2018-11-2900:26:46.003000","label":"b","bounding-box":{"x":89.503502,"y":48.02174,"width":9.4968948,"height":14.64687},"id":"00000d0001000700ff00"}]},{"type":"number","id":"math/146","label":"2","value":2,"items":[{"type":"glyph","timestamp":"2018-11-2900:26:47.100000","label":"2","bounding-box":{"x":100.42667,"y":42.31662,"width":5.6352921,"height":8.557682},"id":"00000e0001000700ff00"}]}]}]},{"type":"superscript","id":"math/238","operands":[{"type":"symbol","id":"math/218","label":"c","items":[{"type":"glyph","timestamp":"2018-11-2900:26:49.127000","label":"c","bounding-box":{"x":129.90196,"y":53.136795,"width":8.344696,"height":9.5318146},"id":"0000100001000700ff00"}]},{"type":"number","id":"math/237","label":"2","value":2,"items":[{"type":"glyph","timestamp":"2018-11-2900:26:49.852000","label":"2","bounding-box":{"x":139.67294,"y":47.431675,"width":5.6352844,"height":8.557682},"id":"0000110001000700ff00"}]}]}]}],"available-notations":["decimal"],"id":"MainBlock","version":"2"}'>$$ a^{2}+b^{2}=c^{2}$$</span>
+      </div>
+      <div class="textContent">
+        If the length of both a and b are known, then c can be calculated as
+
+        <span class="mathContent" data-jiix='{"type":"Math","expressions":[{"type":"=","id":"math/350","items":[{"type":"glyph","timestamp":"2018-11-2900:29:37.387538","label":"=","bounding-box":{"x":81.985954,"y":50.917854,"width":15.418076,"height":6.9727821},"id":"00001a0001000700ff00"}],"operands":[{"type":"symbol","id":"math/349","label":"c","items":[{"type":"glyph","timestamp":"2018-11-2900:29:37.387578","label":"c","bounding-box":{"x":64.558334,"y":49.488651,"width":10.350899,"height":11.82341},"id":"00001b0001000700ff00"}]},{"type":"squareroot","id":"math/362","label":"√","items":[{"type":"glyph","timestamp":"2018-11-2900:29:37.387616","label":"√","bounding-box":{"x":104.48075,"y":30.759586,"width":90.832359,"height":34.892056},"square-root-ratio":0.20056739,"id":"00001c0001000700ff00"}],"operands":[{"type":"+","id":"math/354","items":[{"type":"glyph","timestamp":"2018-11-2900:29:37.387651","label":"+","bounding-box":{"x":150.5314,"y":46.716866,"width":15.396423,"height":15.396416},"id":"00001d0001000700ff00"}],"operands":[{"type":"superscript","id":"math/358","operands":[{"type":"symbol","id":"math/352","label":"a","items":[{"type":"glyph","timestamp":"2018-11-2900:29:37.387688","label":"a","bounding-box":{"x":122.69876,"y":49.488651,"width":11.996643,"height":11.82341},"id":"00001e0001000700ff00"}]},{"type":"number","id":"math/357","label":"2","value":2,"items":[{"type":"glyph","timestamp":"2018-11-2900:29:37.387722","label":"2","bounding-box":{"x":136.46458,"y":42.411926,"width":6.990097,"height":10.615086},"id":"00001f0001000700ff00"}]}]},{"type":"superscript","id":"math/360","operands":[{"type":"symbol","id":"math/355","label":"b","items":[{"type":"glyph","timestamp":"2018-11-2900:29:37.387761","label":"b","bounding-box":{"x":173.00455,"y":43.143852,"width":11.780106,"height":18.168209},"id":"0000200001000700ff00"}]},{"type":"number","id":"math/359","label":"2","value":2,"items":[{"type":"glyph","timestamp":"2018-11-2900:29:37.387793","label":"2","bounding-box":{"x":186.55383,"y":36.067127,"width":6.990097,"height":10.615086},"id":"0000210001000700ff00"}]}]}]}]}]}],"available-notations":["decimal"],"id":"MainBlock","version":"2"}'>$$ c={\sqrt {a^{2}+b^{2}}} $$</span>
+      </div>
+      <div class="textContent">
+        If the length of the hypotenuse c and of one side (a or b) are known,
+        then the length of the other side can be calculated as
+
+        <span class="mathContent" data-jiix='{"type":"Math","expressions":[{"type":"=","id":"math/145","items":[{"type":"glyph","timestamp":"2018-11-2900:34:28.936000","label":"=","bounding-box":{"x":73.958687,"y":48.66777,"width":19.789856,"height":8.9499054},"id":"00001a0001000700ff00"}],"operands":[{"type":"symbol","id":"math/128","label":"a","items":[{"type":"glyph","timestamp":"2018-11-2900:34:27.975000","label":"a","bounding-box":{"x":49.477081,"y":46.833317,"width":15.398285,"height":15.17593},"id":"0000190001000700ff00"}]},{"type":"squareroot","id":"math/174","label":"√","items":[{"type":"glyph","timestamp":"2018-11-2900:34:30.483000","label":"√","bounding-box":{"x":102.83186,"y":22.79364,"width":102.99617,"height":43.757263},"square-root-ratio":0.22703476,"id":"00001b0001000700ff00"}],"operands":[{"type":"-","id":"math/269","items":[{"type":"glyph","timestamp":"2018-11-2900:34:34.311000","label":"-","bounding-box":{"x":159.82774,"y":53.00375,"width":8.2828369,"height":2.1124001},"id":"00001e0001000700ff00"}],"operands":[{"type":"superscript","id":"math/238","operands":[{"type":"symbol","id":"math/195","label":"c","items":[{"type":"glyph","timestamp":"2018-11-2900:34:32.535000","label":"c","bounding-box":{"x":126.21558,"y":46.833317,"width":13.285889,"height":15.17593},"id":"00001c0001000700ff00"}]},{"type":"number","id":"math/237","label":"2","value":2,"items":[{"type":"glyph","timestamp":"2018-11-2900:34:33.415000","label":"2","bounding-box":{"x":141.77229,"y":37.749992,"width":8.9721375,"height":13.624985},"id":"00001d0001000700ff00"}]}]},{"type":"superscript","id":"math/351","operands":[{"type":"symbol","id":"math/312","label":"b","items":[{"type":"glyph","timestamp":"2018-11-2900:34:34.861000","label":"b","bounding-box":{"x":177.19391,"y":38.689457,"width":15.120346,"height":23.31979},"id":"00001f0001000700ff00"}]},{"type":"number","id":"math/350","label":"2","value":2,"items":[{"type":"glyph","timestamp":"2018-11-2900:34:35.881000","label":"2","bounding-box":{"x":194.58508,"y":29.606133,"width":8.9721375,"height":13.624985},"id":"0000200001000700ff00"}]}]}]}]}]}],"available-notations":["decimal"],"id":"MainBlock","version":"2"}'>$$ a={\sqrt {c^{2}-b^{2}}} $$</span>
+        or
+        <span class="mathContent" data-jiix='{"type":"Math","expressions":[{"type":"=","id":"math/41","items":[{"type":"glyph","timestamp":"2018-11-2900:36:06.941328","label":"=","bounding-box":{"x":74.863388,"y":47.348846,"width":19.026161,"height":8.6045265},"id":"00000b0001000700ff00"}],"operands":[{"type":"symbol","id":"math/100","label":"b","items":[{"type":"glyph","timestamp":"2018-11-2900:36:14.867000","label":"b","bounding-box":{"x":51.59375,"y":37.7556,"width":14.536842,"height":22.419872},"id":"00000a0001000700ff00"}]},{"type":"squareroot","id":"math/53","label":"√","items":[{"type":"glyph","timestamp":"2018-11-2900:36:06.941406","label":"√","bounding-box":{"x":102.62234,"y":30.302799,"width":99.288727,"height":34.239071},"square-root-ratio":0.22642379,"id":"00000c0001000700ff00"}],"operands":[{"type":"-","id":"math/45","items":[{"type":"glyph","timestamp":"2018-11-2900:36:06.941440","label":"-","bounding-box":{"x":157.41875,"y":51.517502,"width":7.9631958,"height":2.03088},"id":"00000f0001000700ff00"}],"operands":[{"type":"superscript","id":"math/49","operands":[{"type":"symbol","id":"math/43","label":"c","items":[{"type":"glyph","timestamp":"2018-11-2900:36:06.941477","label":"c","bounding-box":{"x":125.10368,"y":45.585186,"width":12.773186,"height":14.590282},"id":"00000d0001000700ff00"}]},{"type":"number","id":"math/48","label":"2","value":2,"items":[{"type":"glyph","timestamp":"2018-11-2900:36:06.941511","label":"2","bounding-box":{"x":140.06006,"y":36.852394,"width":8.6259003,"height":13.09919},"id":"00000e0001000700ff00"}]}]},{"type":"superscript","id":"math/144","operands":[{"type":"symbol","id":"math/143","label":"a","items":[{"type":"glyph","timestamp":"2018-11-2900:36:18.580000","label":"a","bounding-box":{"x":174.11473,"y":45.585186,"width":14.804062,"height":14.590282},"id":"0000100001000700ff00"}]},{"type":"number","id":"math/51","label":"2","value":2,"items":[{"type":"glyph","timestamp":"2018-11-2900:36:06.941584","label":"2","bounding-box":{"x":191.10199,"y":36.852394,"width":8.6259003,"height":13.09919},"id":"0000110001000700ff00"}]}]}]}]}]}],"available-notations":["decimal"],"id":"MainBlock","version":"2"}'>$$ b={\sqrt {c^{2}-a^{2}}} $$</span>
+      </div>
+    </main>
+    <div id="editorContainer">
+     
+      <nav>
+        <div class="button-div">
+          <button
+            id="undo"
+            class="nav-btn btn-fab-mini btn-lightBlue"
+            disabled
+          >
+            <img src="../assets/img/undo.svg">
+          </button>
+          <button
+            id="redo"
+            class="nav-btn btn-fab-mini btn-lightBlue"
+            disabled
+          >
+            <img src="../assets/img/redo.svg">
+          </button>
+          <div class="spacer"></div>
+        </div>
+        <div>
+          <button
+            class="classic-btn"
+            id="convert"
+            disabled
+          >Convert</button>
+        </div>
+        <button
+        class="classic-btn"
+        id="close"
+      >X</button>
+      </nav>
+      <div
+        id="editor"
+        touch-action="none"
+      ></div>
+
+      <div id="editorBox"></div>
+    </div>
+  </div>
+
+  <script>
+    const animationDelay = getUrlParameter('animation-delay');
+    if(animationDelay){
+      document.querySelector('body').style.setProperty("--animation-duration",animationDelay);
+    }
+    
+    const editorELement1 = document.getElementById('editor');
+    const mathContentElements = document.querySelectorAll('.mathContent');
+    let currentMathElement = undefined;
+    const undoElement = document.getElementById('undo');
+    const redoElement = document.getElementById('redo');
+    const convertElement = document.getElementById('convert');
+    const closeElement = document.getElementById('close');
+
+    let toImport = null;
+
+    editorELement1.addEventListener('exported', (event) => {
+      const exports = event.detail.exports;
+      if (exports && exports['application/vnd.myscript.jiix']) {
+        toImport = exports['application/vnd.myscript.jiix'];
+      }
+    });
+
+    convertElement.addEventListener('click', () => {
+      editorELement1.editor.convert();
+    });
+
+    function toggleView(){
+      //Hide elements
+      document.querySelector('#editorContainer').classList.toggle('visible');
+      document.querySelector('nav').classList.toggle('visible');
+      document.querySelector('#editor').classList.toggle('visible');
+      editorBox.classList.toggle('visible');
+      editorBox.classList.toggle('editorPosition');
+      editorBox.classList.toggle('animateResize');
+    }
+
+    closeElement.addEventListener('click', () => {
+      toggleView()
+      //Recopy the jjix export in the data-jiix attribute
+      editorELement1.editor.waitForIdle();
+      const currentExports = editorELement1.editor.exports;
+      if(currentExports && currentExports['application/vnd.myscript.jiix']){
+        currentMathElement.setAttribute('data-jiix', currentExports['application/vnd.myscript.jiix']);
+        editorELement1.editor.clear();
+        currentMathElement.innerHTML = "";
+        katex.render(currentExports['application/x-latex'], currentMathElement, {displayMode : false})
+      }
+
+    });
+
+      editorELement1.addEventListener('changed', (event) => {
+        undoElement.disabled = !event.detail.canUndo;
+        redoElement.disabled = !event.detail.canRedo;
+        convertElement.disabled = event.detail.isEmpty;
+      });
+
+
+
+      MyScript.register(editor, {
+        recognitionParams: {
+          type: 'MATH',
+          protocol: 'WEBSOCKET',
+          apiVersion: 'V4',
+          server: {
+            scheme: 'https',
+            host: 'webdemoapi.myscript.com',
+            applicationKey: '515131ab-35fa-411c-bb4d-3917e00faf60',
+            hmacKey: '54b2ca8a-6752-469d-87dd-553bb450e9ad'
+          },
+          v4: {
+            alwaysConnected: true,
+            export: {
+              jiix: {
+                strokes: true,
+              }
+            },
+            math: {
+              solver: {
+                enable: false
+              },
+              mimeTypes: ['application/vnd.myscript.jiix',
+                'application/x-latex'
+              ]
+            }
+          }
+        }
+      });
+
+    mathContentElements.forEach((mathContentElement) => {
+      mathContentElement.addEventListener('click', () => {
+        const srcMathContentElement = mathContentElement;
+        const editorBox = document.querySelector("#editorBox");
+        console.log(editorBox);
+        currentMathElement = srcMathContentElement;
+
+        //Importing the previous jjix
+        const currentJiix = currentMathElement.getAttribute('data-jiix');
+        console.log("Current jjix:", currentJiix);
+        if (currentJiix) {
+          editorELement1.editor.import_(currentJiix,
+            'application/vnd.myscript.jiix');
+        }
+
+        const srcElementHeight = srcMathContentElement.offsetHeight;
+        const srcElementWidth = srcMathContentElement.offsetWidth;
+        const srcElementLeft = srcMathContentElement.offsetLeft;
+        const srcElementTop = srcMathContentElement.offsetTop;
+
+
+        document.querySelector('#editorContainer').classList.toggle(
+          'visible');
+        document.querySelector('nav').classList.toggle('visible');
+        document.querySelector('#editor').classList.toggle('visible');
+
+        editorBox.style = `left: ${srcElementLeft}px; top: ${srcElementTop}px; height: ${srcElementHeight}px; width: ${srcElementWidth}px; `;
+        editorBox.classList.toggle('visible');
+        editorBox.classList.toggle('animateResize');
+
+        setTimeout(() => {
+          editorBox.classList.toggle('editorPosition');
+          editorBox.style = '';
+          //document.querySelector('nav').classList.toggle('visible');
+
+
+        }, 0)
+      })
+    })
+
+    undoElement.addEventListener('click', () => {
+      editorELement1.editor.undo();
+    });
+    redoElement.addEventListener('click', () => {
+      editorELement1.editor.redo();
+    });
+
+    window.addEventListener('resize', () => {
+      editorELement1.editor.resize();
+    });
+    
+   function getUrlParameter(name) {
+    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+    var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+    var results = regex.exec(location.search);
+    return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+};
+  </script>
+
+</body>
+
+</html>
