@@ -28,7 +28,7 @@ const defaultConfiguration = {
       }
     },
     v4: {
-      alwaysConnected: false,
+      alwaysConnected: true,
       lang: 'en_US',
       export: {
         'image-resolution': 300,
