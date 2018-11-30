@@ -19,8 +19,8 @@ function checkTextNonText(browser, resultSelector) {
   if (resultSelector && resultSelector.length > 0) {
     browser.waitForElementPresent(resultSelector, 6000 * globalconfig.timeoutAmplificator);
   }
-  browser.getJiixExports(function (res) {
-    console.log('export res: ' + JSON.stringify(res.value));
+  browser.getJiixExports('#editor', function (res) {
+    //console.log('export res: ' + JSON.stringify(res.value));
     const parsedjiix = JSON.parse(JSON.stringify(res.value));
 
     browser.verify.equal(parsedjiix.type, "Raw Content");
@@ -55,7 +55,7 @@ function getStrokesFromJIIX(jiix) {
 function checkNbStrokes(browser, config, resultSelector, property, nbStrokesExpected) {
   const isWebSocketV4 = (config.apiVersion === 'V4' && config.protocol !== 'REST');
   if(isWebSocketV4) {
-    browser.getJiixExports(function (res) {
+    browser.getJiixExports('#editor', function (res) {
       //console.log('export= ' + JSON.stringify(res.value));
       browser.verify.equal(getStrokesFromJIIX(res.value).length, String(nbStrokesExpected));
     })
@@ -285,13 +285,13 @@ function checkDecoration(browser, config, inkName, strokes, labels, component = 
 
     browser.pause(1000);
 
-    browser.getJiixExports(function (res) {
-      console.log('export= ' + JSON.stringify(res.value));
+    browser.getJiixExports(component, function (res) {
+      //console.log('export= ' + JSON.stringify(res.value));
       var spansList = common.findValuesByKey(res.value, 'spans');
       browser.verify.equal(spansList.length, 2);
-      console.log("span0 string= " + JSON.stringify(spansList[0]));
+      //console.log("span0 string= " + JSON.stringify(spansList[0]));
       var span0 = JSON.parse(JSON.stringify(spansList[0]));
-      console.log("span0= "+ JSON.stringify(span0));
+      //console.log("span0= "+ JSON.stringify(span0));
       browser.verify.equal(span0["first-char"], "0");
       browser.verify.equal(span0["last-char"], "4");
       browser.verify.equal(span0.class, "text");
@@ -477,7 +477,6 @@ function checkRecognitionAssetBuilder(browser, config, strokes, labels, componen
 
 function checkImport(browser, config, strokes, labels, component = '#editor', resultSelector = '#editorSupervisor', emptyResultSelector = '#editorSupervisor') {
   console.log('url ' +  browser.launchUrl + config.componentPath);
-  console.log('nb strokes ' + strokes.length);
   let jiixExport = '';
   browser
     .init(browser.launchUrl + config.componentPath).maximizeWindow()
@@ -493,24 +492,15 @@ function checkImport(browser, config, strokes, labels, component = '#editor', re
 
   checkLabel(browser, labels, strokes.length - 1, resultSelector, emptyResultSelector);
 
-  browser.getJiixExports(function (res) {
+  browser.getJiixExports(component, function (res) {
     browser
-      .click('#clear')
-      .waitForIdle('#editorSupervisor', 3000 * globalconfig.timeoutAmplificator);
-
-    checkLabel(browser, labels, -1, resultSelector, emptyResultSelector);
-
-    browser
-      .waitForElementPresent('#importContentField', 1000 * globalconfig.timeoutAmplificator)
-      .waitForElementPresent('#importContent', 1000 * globalconfig.timeoutAmplificator)
-      .setProperty('#importContentField', 'value', JSON.stringify(res.value))
-      .click("#importContent")
+      .click('#import')
       .waitForIdle('#editorSupervisor', 3000 * globalconfig.timeoutAmplificator)
-      .waitUntilElementPropertyEqual('#editorSupervisor', 'state', 'EXPORTED', 2000 * globalconfig.timeoutAmplificator);
-
-    checkLabel(browser, labels, strokes.length - 1, resultSelector, emptyResultSelector);
+      .getJiixExports('#editor2', function (res2) {
+        jiixExport = JSON.parse(res2.value);
+        browser.verify.equal(labels[strokes.length - 1], jiixExport["expressions"][0]["label"]);
+    });
   });
-
   browser.end();
 }
 

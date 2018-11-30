@@ -1,9 +1,9 @@
-exports.command = function getJiixExports(callback) {
+exports.command = function getJiixExports(component, callback) {
   const self = this;
 
-  function getElementProperty() {
+  function getElementProperty(comp) {
     // eslint-disable-next-line no-undef
-    return document.querySelector("#editor").editor.model.exports['application/vnd.myscript.jiix'];
+    return document.querySelector(comp).editor.model.exports['application/vnd.myscript.jiix'];
   }
 
   function getElementPropertyCallback(res) {
@@ -12,6 +12,6 @@ exports.command = function getJiixExports(callback) {
     }
   }
 
-  this.execute(getElementProperty, [], getElementPropertyCallback);
+  this.execute(getElementProperty, [component], getElementPropertyCallback);
   return this;
 };

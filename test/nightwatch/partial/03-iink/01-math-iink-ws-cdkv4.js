@@ -1,6 +1,6 @@
 const inkPlayer = require('../../lib/inkPlayer');
 const config = require('../../../lib/configuration').getConfiguration('MATH', 'WEBSOCKET', 'V4');
-// const configImport = require('../../../lib/configuration').getConfiguration('MATH', 'WEBSOCKET', 'V4', '', 'import');
+const configImport = require('../../../lib/configuration').getConfiguration('MATH', 'WEBSOCKET', 'V4', '', 'Import');
 
 function runLabelTests(ink) {
   module.exports[config.header + ' checkConvert ' + ink.name] = function checkConvert(browser) {
@@ -36,6 +36,6 @@ config.inks
   .forEach(ink => runUndoTests(ink));
 
 
-// configImport.inks
-//  .filter(ink => ['equation2', 'equation3'].includes(ink.name))
-//  .forEach(ink => runImportTests(ink));
+configImport.inks
+ .filter(ink => ['one'].includes(ink.name))
+ .forEach(ink => runImportTests(ink));

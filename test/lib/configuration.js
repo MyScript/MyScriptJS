@@ -247,6 +247,12 @@ const configurations = [{
   type: 'MATH',
   protocol: 'WEBSOCKET',
   apiVersion: 'V4',
+  alternate: 'Import',
+  examples: ['/examples/v4/import_math_jiix.html'],
+}, {
+  type: 'MATH',
+  protocol: 'WEBSOCKET',
+  apiVersion: 'V4',
   alternate: 'RAB',
   examples: ['/examples/v4/custom_resources_content_math.html'],
 }, {
