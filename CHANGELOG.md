@@ -1,3 +1,31 @@
+# [v4.3.0](https://github.com/MyScript/MyScriptJS/tree/v4.3.0)
+
+## Features
+
+- Addition of a new Recognition Assets Builder API to dynamically build text lexicons and math grammars
+- Ability to import JIIX Math content
+- Style and decoration support in the JIIX exports
+- New configuration options for a finer tuning of JIIX exports
+- Always connected is now the default mode for better end user experience
+- Text, Math and Diagram can now be exported to Word, HTML and iink format
+
+## Bugs fix
+
+- Fix multiple inputs example on Firefox
+- Fix smartguide on Edge
+- Fix vulnerabilites in dependencies
+- Fix auto-reconnect
+
+## Others
+
+- New examples :
+    - Recognition asset builder
+    - Export text to file (html, word, png, jpeg)
+    - Use highlight to extract information
+    - Import jiix with math
+    - Search and highlight demoing how to manipulate JIIX label
+    - Use recognition without UI fo easy integration in existing ink capable applications
+
 # [v4.2.0](https://github.com/MyScript/MyScriptJS/tree/v4.2.0)
 
 ## Features
