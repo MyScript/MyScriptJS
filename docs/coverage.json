@@ -1,23 +1,22 @@
 {
-  "coverage": "71.68%",
-  "expectCount": 392,
-  "actualCount": 281,
+  "coverage": "71.89%",
+  "expectCount": 395,
+  "actualCount": 284,
   "files": {
     "src/Editor.js": {
-      "expectCount": 93,
-      "actualCount": 82,
+      "expectCount": 95,
+      "actualCount": 85,
       "undocumentLines": [
-        299,
-        327,
-        443,
+        304,
+        332,
         448,
-        477,
-        527,
-        628,
-        629,
-        810,
-        830,
-        1019
+        453,
+        482,
+        532,
+        633,
+        634,
+        815,
+        1029
       ]
     },
     "src/EditorFacade.js": {
@@ -64,9 +63,11 @@
       "undocumentLines": []
     },
     "src/eastereggs/InkImporter.js": {
-      "expectCount": 1,
+      "expectCount": 2,
       "actualCount": 1,
-      "undocumentLines": []
+      "undocumentLines": [
+        80
+      ]
     },
     "src/grabber/PointerEventGrabber.js": {
       "expectCount": 4,
@@ -74,7 +75,7 @@
       "undocumentLines": [
         26,
         39,
-        188
+        196
       ]
     },
     "src/model/InkModel.js": {
@@ -123,7 +124,7 @@
       "expectCount": 1,
       "actualCount": 0,
       "undocumentLines": [
-        9
+        12
       ]
     },
     "src/recognizer/CryptoHelper.js": {
@@ -208,13 +209,13 @@
       "expectCount": 12,
       "actualCount": 5,
       "undocumentLines": [
-        61,
-        69,
-        77,
-        85,
-        95,
-        140,
-        171
+        62,
+        70,
+        78,
+        86,
+        96,
+        146,
+        152
       ]
     },
     "src/recognizer/websocket/CdkWSRecognizerUtil.js": {

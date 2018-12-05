@@ -64,7 +64,8 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-MathTheme">MathTheme</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-TextTheme">TextTheme</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Theme">Theme</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#eastereggs">eastereggs</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-inkImporter">inkImporter</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#eastereggs">eastereggs</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-importStrokeGroups">importStrokeGroups</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-inkImporter">inkImporter</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#grabber">grabber</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-attach">attach</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-detach">detach</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Grabber">Grabber</a></span></span></li>
@@ -282,7 +283,7 @@ import * as ImageRenderer from &apos;./renderer/canvas/ImageRenderer&apos;;
 import * as RecognizerContext from &apos;./model/RecognizerContext&apos;;
 import * as SmartGuide from &apos;./smartguide/SmartGuide&apos;;
 import Constants from &apos;./configuration/Constants&apos;;
-import { inkImporter } from &apos;./eastereggs/InkImporter&apos;;
+import * as eastereggs from &apos;./eastereggs/InkImporter&apos;;
 
 
 /**
@@ -445,19 +446,24 @@ function recognizerCallback(editor, error, model, ...events) {
       if (err.type !== &apos;close&apos;) {
         logger.error(&apos;Error while firing the recognition&apos;, err.stack || err); // Handle any error from all above steps
       }
-      if ((err.message === &apos;Invalid application key.&apos;) || (err.message === &apos;Invalid HMAC&apos;) ||
-      (err.error &amp;&amp;
-        err.error.result &amp;&amp;
-        err.error.result.error &amp;&amp;
-        (err.error.result.error === &apos;InvalidApplicationKeyException&apos; || err.error.result.error === &apos;InvalidHMACSignatureException&apos;)
-      )) {
+      if (
+        // IInk error managment before refactor
+        (err.message === &apos;Invalid application key.&apos;) || (err.message === &apos;Invalid HMAC&apos;) ||
+        // CDK error managment
+        (err.error &amp;&amp;
+          err.error.result &amp;&amp;
+          err.error.result.error &amp;&amp;
+          (err.error.result.error === &apos;InvalidApplicationKeyException&apos; || err.error.result.error === &apos;InvalidHMACSignatureException&apos;)) ||
+        // IInk error managment after refactor
+        (err.code &amp;&amp; err.code === &apos;access.not.granted&apos;)) {
         editorRef.error.innerText = Constants.Error.WRONG_CREDENTIALS;
-      } else if (err.message === &apos;Session is too old. Max Session Duration Reached&apos;) {
+      } else if (err.message === &apos;Session is too old. Max Session Duration Reached&apos; ||
+        (err.code &amp;&amp; err.code === &apos;session.too.old&apos;)) {
         editorRef.error.innerText = Constants.Error.TOO_OLD;
-      } else if (err.message &amp;&amp; editorRef.error.style.display === &apos;none&apos;) {
+      } else if ((err.message || err.code === 1006) &amp;&amp; editorRef.error.style.display === &apos;none&apos;) {
         editorRef.error.innerText = Constants.Error.NOT_REACHABLE;
       }
-      if ((editorRef.error.innerText === Constants.Error.TOO_OLD || err.code === 1006 || err.reason === &apos;CLOSE_RECOGNIZER&apos;) &amp;&amp; RecognizerContext.canReconnect(editor.recognizerContext)) {
+      if ((editorRef.error.innerText === Constants.Error.TOO_OLD || err.code === 1000 || err.reason === &apos;CLOSE_RECOGNIZER&apos;) &amp;&amp; RecognizerContext.canReconnect(editor.recognizerContext)) {
         logger.info(&apos;Reconnection is available&apos;, err.stack || err);
         editorRef.error.style.display = &apos;none&apos;;
       } else {
@@ -617,9 +623,9 @@ function launchResize(editor, model) {
         const editorRef = editor;
         window.clearTimeout(editor.resizeTimer);
         editorRef.resizeTimer = window.setTimeout(() =&gt; {
-          editor.recognizer.resize(editor.recognizerContext, model, editor.domElement, (err, res, ...types) =&gt; {
+          editor.recognizer.resize(editor.recognizerContext, model, (err, res, ...types) =&gt; {
             recognizerCallback(editor, err, res, ...types);
-          });
+          }, editor.domElement);
         }, editor.configuration.resizeTriggerDelay);
       });
     SmartGuide.resize(editor.smartGuide);
@@ -1097,6 +1103,11 @@ export class Editor {
     }
   }
 
+  /**
+   * @Deprecated
+   * @param rawStrokes
+   * @param strokeGroups
+   */
   reDraw(rawStrokes, strokeGroups) {
     rawStrokes.forEach((stroke) =&gt; {
       InkModel.addStroke(this.model, stroke);
@@ -1316,13 +1327,31 @@ export class Editor {
     };
   }
 
+  /**
+   * Detach event listeners from the DOM element created at editor creation.
+   */
+  unload() {
+    if (this.grabber) { // Remove event handlers to avoid multiplication (detach grabber)
+      this.grabber.detach(this.domElement, this.grabberContext);
+    }
+    if (this.innerRenderer) {
+      this.innerRenderer.detach(this.domElement, this.rendererContext);
+    }
+  }
+
+  /**
+   * Trigger the change callbacks (and by default send a change event).
+   */
+  forceChange() {
+    triggerCallbacks(this, undefined, Constants.EventType.CHANGED);
+  }
+
   /* eslint-disable class-methods-use-this */
   /**
    * Get access to some easter egg features link ink injection. Use at your own risk (less tested and may be removed without notice).
-   * @returns {{inkImporter: inkImporter}}
    */
   get eastereggs() {
-    return { inkImporter };
+    return eastereggs;
   }
   /* eslint-enable class-methods-use-this */
 }

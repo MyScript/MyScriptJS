@@ -1,28 +1,28 @@
 {
   "type": "File",
   "start": 0,
-  "end": 5014,
+  "end": 5048,
   "loc": {
     "start": {
       "line": 1,
       "column": 0
     },
     "end": {
-      "line": 97,
+      "line": 99,
       "column": 0
     }
   },
   "program": {
     "type": "Program",
     "start": 0,
-    "end": 5014,
+    "end": 5048,
     "loc": {
       "start": {
         "line": 1,
         "column": 0
       },
       "end": {
-        "line": 97,
+        "line": 99,
         "column": 0
       }
     },
@@ -6524,6 +6524,40 @@
             }
           }
         ]
+      },
+      {
+        "type": "ExportDefaultDeclaration",
+        "start": 5015,
+        "end": 5047,
+        "loc": {
+          "start": {
+            "line": 98,
+            "column": 0
+          },
+          "end": {
+            "line": 98,
+            "column": 32
+          }
+        },
+        "declaration": {
+          "type": "Identifier",
+          "start": 5030,
+          "end": 5046,
+          "loc": {
+            "start": {
+              "line": 98,
+              "column": 15
+            },
+            "end": {
+              "line": 98,
+              "column": 31
+            },
+            "identifierName": "defaultBehaviors"
+          },
+          "name": "defaultBehaviors",
+          "leadingComments": [],
+          "trailingComments": []
+        }
       }
     ],
     "directives": []
@@ -19615,6 +19649,114 @@
     },
     {
       "type": {
+        "label": "export",
+        "keyword": "export",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "value": "export",
+      "start": 5015,
+      "end": 5021,
+      "loc": {
+        "start": {
+          "line": 98,
+          "column": 0
+        },
+        "end": {
+          "line": 98,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "default",
+        "keyword": "default",
+        "beforeExpr": true,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "value": "default",
+      "start": 5022,
+      "end": 5029,
+      "loc": {
+        "start": {
+          "line": 98,
+          "column": 7
+        },
+        "end": {
+          "line": 98,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "defaultBehaviors",
+      "start": 5030,
+      "end": 5046,
+      "loc": {
+        "start": {
+          "line": 98,
+          "column": 15
+        },
+        "end": {
+          "line": 98,
+          "column": 31
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ";",
+        "beforeExpr": true,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 5046,
+      "end": 5047,
+      "loc": {
+        "start": {
+          "line": 98,
+          "column": 31
+        },
+        "end": {
+          "line": 98,
+          "column": 32
+        }
+      }
+    },
+    {
+      "type": {
         "label": "eof",
         "beforeExpr": false,
         "startsExpr": false,
@@ -19626,15 +19768,15 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 5014,
-      "end": 5014,
+      "start": 5048,
+      "end": 5048,
       "loc": {
         "start": {
-          "line": 97,
+          "line": 99,
           "column": 0
         },
         "end": {
-          "line": 97,
+          "line": 99,
           "column": 0
         }
       }

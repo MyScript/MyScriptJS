@@ -64,7 +64,8 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-MathTheme">MathTheme</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-TextTheme">TextTheme</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Theme">Theme</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#eastereggs">eastereggs</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-inkImporter">inkImporter</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#eastereggs">eastereggs</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-importStrokeGroups">importStrokeGroups</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-inkImporter">inkImporter</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#grabber">grabber</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-attach">attach</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-detach">detach</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Grabber">Grabber</a></span></span></li>
@@ -268,13 +269,13 @@
 </nav>
 
 <div class="content" data-ice="content"><div class="header-notice">
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {Editor} from &apos;<span><a href="file/src/Editor.js.html#lineNumber426">myscript/src/Editor.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {Editor} from &apos;<span><a href="file/src/Editor.js.html#lineNumber431">myscript/src/Editor.js</a></span>&apos;</code></pre></div>
   <span data-ice="access">public</span>
   <span data-ice="kind">class</span>
   
   
   
-  <span data-ice="source">| <span><a href="file/src/Editor.js.html#lineNumber426">source</a></span></span>
+  <span data-ice="source">| <span><a href="file/src/Editor.js.html#lineNumber431">source</a></span></span>
 </div>
 
 <div class="self-detail detail">
@@ -682,7 +683,7 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/Editor.js~Editor.html#instance-get-eastereggs">eastereggs</a></span></span><span class="code" data-ice="signature">: {inkImporter: <span><a href="function/index.html#static-function-inkImporter">inkImporter</a></span>}: {&quot;inkImporter&quot;: <span>*</span>}</span>
+          <span class="code" data-ice="name"><span><a href="class/src/Editor.js~Editor.html#instance-get-eastereggs">eastereggs</a></span></span><span class="code" data-ice="signature">: <span>*</span></span>
         </p>
       </div>
       <div>
@@ -2042,6 +2043,35 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
           
           
           
+          <span class="code" data-ice="name"><span><a href="class/src/Editor.js~Editor.html#instance-method-forceChange">forceChange</a></span></span><span class="code" data-ice="signature">()</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Trigger the change callbacks (and by default send a change event).</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
           <span class="code" data-ice="name"><span><a href="class/src/Editor.js~Editor.html#instance-method-getStats">getStats</a></span></span><span class="code" data-ice="signature">(): <span><a href="typedef/index.html#static-typedef-Stats">Stats</a></span></span>
         </p>
       </div>
@@ -2446,6 +2476,35 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
           
           
           
+          <span class="code" data-ice="name"><span><a href="class/src/Editor.js~Editor.html#instance-method-unload">unload</a></span></span><span class="code" data-ice="signature">()</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Detach event listeners from the DOM element created at editor creation.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
           <span class="code" data-ice="name"><span><a href="class/src/Editor.js~Editor.html#instance-method-waitForIdle">waitForIdle</a></span></span><span class="code" data-ice="signature">()</span>
         </p>
       </div>
@@ -2483,7 +2542,7 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber434">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber439">source</a></span></span>
     </span>
   </h3>
 
@@ -2574,7 +2633,7 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber618">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber623">source</a></span></span>
     </span>
   </h3>
 
@@ -2630,7 +2689,7 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber586">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber591">source</a></span></span>
     </span>
   </h3>
 
@@ -2686,7 +2745,7 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber739">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber744">source</a></span></span>
     </span>
   </h3>
 
@@ -2742,7 +2801,7 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber909">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber919">source</a></span></span>
     </span>
   </h3>
 
@@ -2798,7 +2857,7 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber928">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber938">source</a></span></span>
     </span>
   </h3>
 
@@ -2854,7 +2913,7 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber971">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber981">source</a></span></span>
     </span>
   </h3>
 
@@ -2910,7 +2969,7 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber882">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber892">source</a></span></span>
     </span>
   </h3>
 
@@ -2966,7 +3025,7 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber863">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber873">source</a></span></span>
     </span>
   </h3>
 
@@ -3022,7 +3081,7 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber513">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber518">source</a></span></span>
     </span>
   </h3>
 
@@ -3078,7 +3137,7 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber497">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber502">source</a></span></span>
     </span>
   </h3>
 
@@ -3123,7 +3182,7 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber439">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber444">source</a></span></span>
     </span>
   </h3>
 
@@ -3163,11 +3222,11 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
     
     
     
-    <span class="code" data-ice="name">eastereggs</span><span class="code" data-ice="signature">: {inkImporter: <span><a href="function/index.html#static-function-inkImporter">inkImporter</a></span>}: {&quot;inkImporter&quot;: <span>*</span>}</span>
+    <span class="code" data-ice="name">eastereggs</span><span class="code" data-ice="signature">: <span>*</span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber1054">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber1082">source</a></span></span>
     </span>
   </h3>
 
@@ -3182,19 +3241,7 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
   <div data-ice="properties">
 </div>
 
-  <div class="return-params" data-ice="returnParams">
-    <h4>Return:</h4>
-    <table>
-      <tbody>
-        <tr>
-          <td class="return-type code" data-ice="returnType">{inkImporter: <span><a href="function/index.html#static-function-inkImporter">inkImporter</a></span>}</td>
-          
-        </tr>
-      </tbody>
-    </table>
-    <div data-ice="returnProperties">
-</div>
-  </div>
+  
 
   
 
@@ -3223,7 +3270,7 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber448">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber453">source</a></span></span>
     </span>
   </h3>
 
@@ -3266,7 +3313,7 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber456">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber461">source</a></span></span>
     </span>
   </h3>
 
@@ -3310,7 +3357,7 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber1015">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber1025">source</a></span></span>
     </span>
   </h3>
 
@@ -3366,7 +3413,7 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber723">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber728">source</a></span></span>
     </span>
   </h3>
 
@@ -3422,7 +3469,7 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber610">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber615">source</a></span></span>
     </span>
   </h3>
 
@@ -3466,7 +3513,7 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber847">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber857">source</a></span></span>
     </span>
   </h3>
 
@@ -3522,7 +3569,7 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber763">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber768">source</a></span></span>
     </span>
   </h3>
 
@@ -3578,7 +3625,7 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber901">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber911">source</a></span></span>
     </span>
   </h3>
 
@@ -3634,7 +3681,7 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber443">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber448">source</a></span></span>
     </span>
   </h3>
 
@@ -3677,7 +3724,7 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber527">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber532">source</a></span></span>
     </span>
   </h3>
 
@@ -3720,7 +3767,7 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber483">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber488">source</a></span></span>
     </span>
   </h3>
 
@@ -3764,7 +3811,7 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber669">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber674">source</a></span></span>
     </span>
   </h3>
 
@@ -3808,7 +3855,7 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber468">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber473">source</a></span></span>
     </span>
   </h3>
 
@@ -3852,7 +3899,7 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber521">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber526">source</a></span></span>
     </span>
   </h3>
 
@@ -3896,7 +3943,7 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber535">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber540">source</a></span></span>
     </span>
   </h3>
 
@@ -3952,7 +3999,7 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber557">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber562">source</a></span></span>
     </span>
   </h3>
 
@@ -4008,7 +4055,7 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber543">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber548">source</a></span></span>
     </span>
   </h3>
 
@@ -4052,7 +4099,7 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber747">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber752">source</a></span></span>
     </span>
   </h3>
 
@@ -4108,7 +4155,7 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber955">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber965">source</a></span></span>
     </span>
   </h3>
 
@@ -4164,7 +4211,7 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber681">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber686">source</a></span></span>
     </span>
   </h3>
 
@@ -4220,7 +4267,7 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber642">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber647">source</a></span></span>
     </span>
   </h3>
 
@@ -4264,7 +4311,7 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber715">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber720">source</a></span></span>
     </span>
   </h3>
 
@@ -4320,7 +4367,7 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber706">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber711">source</a></span></span>
     </span>
   </h3>
 
@@ -4364,7 +4411,7 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber462">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber467">source</a></span></span>
     </span>
   </h3>
 
@@ -4408,7 +4455,7 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber477">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber482">source</a></span></span>
     </span>
   </h3>
 
@@ -4451,7 +4498,7 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber731">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber736">source</a></span></span>
     </span>
   </h3>
 
@@ -4507,7 +4554,7 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber1019">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber1029">source</a></span></span>
     </span>
   </h3>
 
@@ -4550,7 +4597,7 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber578">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber583">source</a></span></span>
     </span>
   </h3>
 
@@ -4606,7 +4653,7 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber565">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber570">source</a></span></span>
     </span>
   </h3>
 
@@ -4650,7 +4697,7 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber628">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber633">source</a></span></span>
     </span>
   </h3>
 
@@ -4693,7 +4740,7 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber629">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber634">source</a></span></span>
     </span>
   </h3>
 
@@ -4736,7 +4783,7 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber963">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber973">source</a></span></span>
     </span>
   </h3>
 
@@ -4794,7 +4841,7 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber594">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber599">source</a></span></span>
     </span>
   </h3>
 
@@ -4837,7 +4884,7 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber603">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber608">source</a></span></span>
     </span>
   </h3>
 
@@ -4880,7 +4927,7 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber475">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber480">source</a></span></span>
     </span>
   </h3>
 
@@ -4923,7 +4970,7 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber504">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber509">source</a></span></span>
     </span>
   </h3>
 
@@ -4966,7 +5013,7 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber526">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber531">source</a></span></span>
     </span>
   </h3>
 
@@ -5009,7 +5056,7 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber548">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber553">source</a></span></span>
     </span>
   </h3>
 
@@ -5052,7 +5099,7 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber636">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber641">source</a></span></span>
     </span>
   </h3>
 
@@ -5095,7 +5142,7 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber700">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber705">source</a></span></span>
     </span>
   </h3>
 
@@ -5138,7 +5185,7 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber570">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber575">source</a></span></span>
     </span>
   </h3>
 
@@ -5181,7 +5228,7 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber627">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber632">source</a></span></span>
     </span>
   </h3>
 
@@ -5225,7 +5272,7 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber690">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber695">source</a></span></span>
     </span>
   </h3>
 
@@ -5272,7 +5319,7 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber916">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber926">source</a></span></span>
     </span>
   </h3>
 
@@ -5316,7 +5363,7 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber935">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber945">source</a></span></span>
     </span>
   </h3>
 
@@ -5377,7 +5424,7 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber979">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber989">source</a></span></span>
     </span>
   </h3>
 
@@ -5427,6 +5474,50 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
   
 </div>
 <div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-forceChange">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">forceChange</span><span class="code" data-ice="signature">()</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber1074">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Trigger the change callbacks (and by default send a change event).</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
   <h3 data-ice="anchor" id="instance-method-getStats">
     <span class="access" data-ice="access">public</span>
     
@@ -5438,7 +5529,7 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber755">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber760">source</a></span></span>
     </span>
   </h3>
 
@@ -5494,7 +5585,7 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber999">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber1009">source</a></span></span>
     </span>
   </h3>
 
@@ -5538,7 +5629,7 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber991">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber1001">source</a></span></span>
     </span>
   </h3>
 
@@ -5606,7 +5697,7 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber773">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber778">source</a></span></span>
     </span>
   </h3>
 
@@ -5682,7 +5773,7 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber1007">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber1017">source</a></span></span>
     </span>
   </h3>
 
@@ -5742,7 +5833,7 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber786">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber791">source</a></span></span>
     </span>
   </h3>
 
@@ -5803,7 +5894,7 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber797">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber802">source</a></span></span>
     </span>
   </h3>
 
@@ -5864,7 +5955,7 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber830">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber840">source</a></span></span>
     </span>
   </h3>
 
@@ -5929,7 +6020,7 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber889">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber899">source</a></span></span>
     </span>
   </h3>
 
@@ -5973,7 +6064,7 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber810">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber815">source</a></span></span>
     </span>
   </h3>
 
@@ -6032,7 +6123,7 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber1026">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber1036">source</a></span></span>
     </span>
   </h3>
 
@@ -6076,7 +6167,7 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber946">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber956">source</a></span></span>
     </span>
   </h3>
 
@@ -6136,7 +6227,7 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber1036">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber1046">source</a></span></span>
     </span>
   </h3>
 
@@ -6196,7 +6287,7 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber870">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber880">source</a></span></span>
     </span>
   </h3>
 
@@ -6204,6 +6295,50 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
   
   
   <div data-ice="description"><p>Undo the last action.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-unload">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">unload</span><span class="code" data-ice="signature">()</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber1062">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Detach event listeners from the DOM element created at editor creation.</p>
 </div>
 
   
@@ -6240,7 +6375,7 @@ WARNING : Need to fire a clear if user have already input some strokes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber854">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Editor.js.html#lineNumber864">source</a></span></span>
     </span>
   </h3>
 

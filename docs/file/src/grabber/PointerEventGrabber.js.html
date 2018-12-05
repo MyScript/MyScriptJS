@@ -64,7 +64,8 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-MathTheme">MathTheme</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-TextTheme">TextTheme</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Theme">Theme</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#eastereggs">eastereggs</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-inkImporter">inkImporter</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#eastereggs">eastereggs</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-importStrokeGroups">importStrokeGroups</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-inkImporter">inkImporter</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#grabber">grabber</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-attach">attach</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-detach">detach</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Grabber">Grabber</a></span></span></li>
@@ -418,10 +419,18 @@ export function attach(element, editor, offsetTop = 0, offsetLeft = 0) {
     const smartGuideIds = [&apos;smartguide&apos;, &apos;prompter-text-container&apos;, &apos;prompter-text&apos;, &apos;tag-icon&apos;, &apos;ellipsis&apos;];
     const scrollbarClasses = [&apos;ps__rail-x&apos;, &apos;ps__thumb-x&apos;];
     // Check if pointer entered into any smartguide elements or scrollbar
+    // Use case : when the pointer is entering the smartguide or scrollbar, a pointerout (or leave) is fired.
+    // The related target is then the DOM element that was left.
+    // We don&apos;t want this to cause editor.pointerUp because the stroke isn&apos;t finished.
     const pointerEnteredSmartGuide = evt.relatedTarget &amp;&amp; (smartGuideIds.includes(evt.relatedTarget.className) || scrollbarClasses.includes(evt.relatedTarget.className));
     // Check if pointer didn&apos;t stay in the smartguide and pointer exited the smartguide or scrollbar
+    // Use case : when the pointer is leaving the smartguide or scrollbar, a pointerout (or leave) is fired.
+    // The related target is then the DOM element that was left (the smart guide)
+    // We are entering again the editor
+    // We don&apos;t want this to cause editor.pointerUp because the stroke isn&apos;t finished.
     const pointerExitedSmartGuide = evt.relatedTarget &amp;&amp; evt.target &amp;&amp; (smartGuideIds.includes(evt.target.className) || scrollbarClasses.includes(evt.target.className));
     // Check if pointer moved between words in smartguide
+    // Same use case as pointerEnteredSmartGuide but for the words in the smartguide (each word is a span).
     const pointerMovedWords = evt.relatedTarget &amp;&amp; evt.target &amp;&amp; (evt.target.tagName === &apos;SPAN&apos; || evt.relatedTarget.tagName === &apos;SPAN&apos;);
     if (pointerEnteredSmartGuide || pointerExitedSmartGuide || pointerMovedWords) {
       evt.stopPropagation();

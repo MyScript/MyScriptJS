@@ -64,7 +64,8 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-MathTheme">MathTheme</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-TextTheme">TextTheme</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Theme">Theme</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#eastereggs">eastereggs</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-inkImporter">inkImporter</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#eastereggs">eastereggs</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-importStrokeGroups">importStrokeGroups</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-inkImporter">inkImporter</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#grabber">grabber</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-attach">attach</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-detach">detach</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Grabber">Grabber</a></span></span></li>
@@ -347,7 +348,8 @@ function xhr(type, url, data, recognizerContext = {}, apiVersion, mimeType) {
       request.setRequestHeader(&apos;Content-Type&apos;, &apos;application/json&apos;);
     }
 
-    if (mimeType === pptxMimeType) {
+    const isBlobType = mimeType &amp;&amp; (mimeType === pptxMimeType || mimeType.startsWith(&apos;image/png&apos;) || mimeType.startsWith(&apos;image/jpeg&apos;));
+    if (isBlobType) {
       request.responseType = &apos;blob&apos;;
     }
 
@@ -357,7 +359,7 @@ function xhr(type, url, data, recognizerContext = {}, apiVersion, mimeType) {
 
     request.onload = () =&gt; {
       if (request.status &gt;= 200 &amp;&amp; request.status &lt; 300) {
-        mimeType === pptxMimeType ? resolve(request.response) : resolve(parse(request));
+        isBlobType ? resolve(request.response) : resolve(parse(request));
       } else {
         reject(new Error(request.responseText));
       }
@@ -366,7 +368,7 @@ function xhr(type, url, data, recognizerContext = {}, apiVersion, mimeType) {
     request.onreadystatechange = () =&gt; {
       if (request.readyState === 4) {
         if (request.status &gt;= 200 &amp;&amp; request.status &lt; 300) {
-          mimeType === pptxMimeType ? resolve(request.response) : resolve(parse(request));
+          isBlobType ? resolve(request.response) : resolve(parse(request));
         }
       }
     };

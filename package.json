@@ -1,6 +1,6 @@
 {
   "name": "myscript",
-  "version": "4.2.0",
+  "version": "4.3.0",
   "main": "dist/myscript.min.js",
   "module": "dist/myscript.esm.js",
   "description": "MyScriptJS is the fastest way to integrate handwriting panel and recognition in your webapp",
