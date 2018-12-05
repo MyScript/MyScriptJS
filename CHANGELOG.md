@@ -24,7 +24,7 @@
     - Use highlight to extract information
     - Import jiix with math
     - Search and highlight demoing how to manipulate JIIX label
-    - Use recognition without UI fo easy integration in existing ink capable applications
+    - Use recognition without UI for easy integration in existing ink capable applications
 
 # [v4.2.0](https://github.com/MyScript/MyScriptJS/tree/v4.2.0)
 
