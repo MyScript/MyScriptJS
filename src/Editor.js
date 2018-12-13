@@ -917,7 +917,7 @@ export class Editor {
    * @return {Boolean}
    */
   get canClear() {
-    return this.canUndo && this.model.rawStrokes.length > 0;
+    return this.canUndo && !this.isEmpty;
   }
 
   /**
