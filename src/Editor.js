@@ -924,11 +924,13 @@ export class Editor {
    * Clear the output and the recognition result.
    */
   clear() {
-    logger.debug('Clear current model', this.model);
-    triggerCallbacks(this, undefined, Constants.EventType.CLEAR);
-    this.recognizer.clear(this.recognizerContext, this.model, (err, res, ...types) => {
-      recognizerCallback(this, err, res, ...types);
-    });
+    if (this.canClear) {
+      logger.debug('Clear current model', this.model);
+      triggerCallbacks(this, undefined, Constants.EventType.CLEAR);
+      this.recognizer.clear(this.recognizerContext, this.model, (err, res, ...types) => {
+        recognizerCallback(this, err, res, ...types);
+      });
+    }
   }
 
   /**
