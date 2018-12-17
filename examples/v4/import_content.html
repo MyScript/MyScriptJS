@@ -17,7 +17,7 @@
   <script type="text/javascript" src="../../dist/myscript.min.js"></script>
 </head>
 
-<body touch-action="none">
+<body>
 <div>
   <nav>
     <div class="button-div">
@@ -32,7 +32,7 @@
     <input type="text" class="input-field" id="importContentField" data-type="text/plain" placeholder="e.g. hello world">
     <button class="classic-btn" id="importContent">Import</button>
   </nav>
-  <div id="editor"></div>
+  <div id="editor" touch-action="none"></div>
 </div>
 <script>
   const editorElement = document.getElementById('editor');

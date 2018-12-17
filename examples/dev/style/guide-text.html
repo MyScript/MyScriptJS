@@ -17,7 +17,7 @@
   <script type="text/javascript" src="../../../dist/myscript.min.js"></script>
 </head>
 
-<body touch-action="none">
+<body>
 <div>
   <nav>
     <label for="font-style">Font style</label>
@@ -73,7 +73,7 @@
     <div class="spacer"></div>
     <button class="action-label-button" id="convert" disabled>Convert</button>
   </nav>
-  <div id="editor"></div>
+  <div id="editor" touch-action="none"></div>
 </div>
 <script>
   var editorElement = document.getElementById('editor');

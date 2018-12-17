@@ -17,11 +17,11 @@
     <script type="text/javascript" src="../../dist/myscript.min.js"></script>
   </head>
 
-  <body touch-action="none">
+  <body>
   <nav>
     <select id="language"></select>
   </nav>
-    <div id="editor"></div>
+    <div id="editor" touch-action="none"></div>
     <script>
       const languageElement = document.getElementById('language');
       const editorElement = document.getElementById('editor');

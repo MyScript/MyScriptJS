@@ -24,7 +24,7 @@
   </style>
 </head>
 
-<body touch-action="none">
+<body>
 <p class="description">This example use a math custom resource. The grammar restrict the recognition to only basic elementary school math (addition and substraction). It is sent directly to the configuration.</p>
 <div id="result"></div>
 <div>
@@ -43,7 +43,7 @@
     <div class="spacer"></div>
     <button class="classic-btn" id="convert" disabled>Convert</button>
   </nav>
-  <div id="editor"></div>
+  <div id="editor" touch-action="none"></div>
 </div>
 <script>
   var editorElement = document.getElementById('editor');
