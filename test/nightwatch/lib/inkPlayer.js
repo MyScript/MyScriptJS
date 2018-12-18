@@ -496,6 +496,7 @@ function checkImport(browser, config, strokes, labels, component = '#editor', re
     browser
       .click('#import')
       .waitForIdle('#editorSupervisor', 3000 * globalconfig.timeoutAmplificator)
+      .waitForIdle('#editor2', 3000 * globalconfig.timeoutAmplificator)
       .getJiixExports('#editor2', function (res2) {
         jiixExport = JSON.parse(res2.value);
         browser.verify.equal(labels[strokes.length - 1], jiixExport["expressions"][0]["label"]);
