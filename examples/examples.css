@@ -58,6 +58,10 @@ nav {
     margin: 0 12px;
 }
 
+#importContent {
+    margin: 5px;
+}
+
 #lexicon {
     margin: 0 12px;
     width: 500px;
@@ -300,6 +304,9 @@ select:focus {
 
     nav {
         padding: 12px 6px;
+        justify-content: center;
+        flex-wrap: wrap;
+        flex-direction: column;
     }
 }
 
@@ -522,4 +529,5 @@ select:focus {
 
 .button-div {
     display: flex;
+    margin: 5px;
 }

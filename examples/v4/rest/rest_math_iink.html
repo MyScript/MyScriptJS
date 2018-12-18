@@ -50,6 +50,9 @@
   });
 
   function cleanLatex(latexExport) {
+    if(typeof latexExport === 'number') {
+      latexExport = latexExport.toString();
+    }
     if (latexExport.includes('\\\\')) {
       const steps = '\\begin{align*}' + latexExport + '\\end{align*}';
       return steps.replace("\\overrightarrow", "\\vec")
