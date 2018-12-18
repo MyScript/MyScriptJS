@@ -25,7 +25,7 @@
     <script type="text/javascript" src="../../dist/myscript.min.js"></script>
   </head>
 
-  <body touch-action="none">
+  <body>
     <div id="export-result"></div>
     <div>
       <nav>
@@ -43,7 +43,7 @@
         <div class="spacer"></div>
         <button class="classic-btn" id="exportContent" disabled>Export</button>
       </nav>
-      <div id="editor"></div>
+      <div id="editor" touch-action="none"></div>
     </div>
     <script>
       var editorElement = document.getElementById('editor');

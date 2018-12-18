@@ -22,7 +22,7 @@
   <script type="text/javascript" src="../../dist/myscript.min.js"></script>
 </head>
 
-<body touch-action="none">
+<body>
 <nav>
   <div class="button-div">
     <button id="clear" class="nav-btn btn-fab-mini btn-lightBlue" disabled>
@@ -37,7 +37,7 @@
   </div>
   <div class="spacer"></div>
 </nav>
-<div id="editor"></div>
+<div id="editor" touch-action="none"></div>
 <script>
   var editorElement = document.getElementById('editor');
   var undoElement = document.getElementById('undo');
