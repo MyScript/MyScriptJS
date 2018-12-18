@@ -36,6 +36,12 @@ pipeline {
           sh "make ${env.MAKE_ARGS} test"
         }
       }
+
+      stage ('audit'){
+          steps {
+            sh "npm audit"
+          }
+      }
     }
 
     post {
