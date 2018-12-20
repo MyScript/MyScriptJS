@@ -1188,18 +1188,20 @@ export class Editor {
    * @return {Boolean}
    */
   get canClear() {
-    return this.canUndo &amp;&amp; this.model.rawStrokes.length &gt; 0;
+    return this.canUndo &amp;&amp; !this.isEmpty;
   }
 
   /**
    * Clear the output and the recognition result.
    */
   clear() {
-    logger.debug(&apos;Clear current model&apos;, this.model);
-    triggerCallbacks(this, undefined, Constants.EventType.CLEAR);
-    this.recognizer.clear(this.recognizerContext, this.model, (err, res, ...types) =&gt; {
-      recognizerCallback(this, err, res, ...types);
-    });
+    if (this.canClear) {
+      logger.debug(&apos;Clear current model&apos;, this.model);
+      triggerCallbacks(this, undefined, Constants.EventType.CLEAR);
+      this.recognizer.clear(this.recognizerContext, this.model, (err, res, ...types) =&gt; {
+        recognizerCallback(this, err, res, ...types);
+      });
+    }
   }
 
   /**

@@ -1741,13 +1741,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/editor.js~editor#penstyle",
-    "class/src/Editor.js~Editor.html#instance-get-penStyle",
+    "class/src/Editor.js~Editor.html#instance-set-penStyle",
     "src/Editor.js~Editor#penStyle",
     "member"
   ],
   [
     "src/editor.js~editor#penstyle",
-    "class/src/Editor.js~Editor.html#instance-set-penStyle",
+    "class/src/Editor.js~Editor.html#instance-get-penStyle",
     "src/Editor.js~Editor#penStyle",
     "member"
   ],
@@ -1807,13 +1807,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/editor.js~editor#recognizer",
-    "class/src/Editor.js~Editor.html#instance-get-recognizer",
+    "class/src/Editor.js~Editor.html#instance-set-recognizer",
     "src/Editor.js~Editor#recognizer",
     "member"
   ],
   [
     "src/editor.js~editor#recognizer",
-    "class/src/Editor.js~Editor.html#instance-set-recognizer",
+    "class/src/Editor.js~Editor.html#instance-get-recognizer",
     "src/Editor.js~Editor#recognizer",
     "member"
   ],
@@ -1837,13 +1837,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/editor.js~editor#renderer",
-    "class/src/Editor.js~Editor.html#instance-get-renderer",
+    "class/src/Editor.js~Editor.html#instance-set-renderer",
     "src/Editor.js~Editor#renderer",
     "member"
   ],
   [
     "src/editor.js~editor#renderer",
-    "class/src/Editor.js~Editor.html#instance-set-renderer",
+    "class/src/Editor.js~Editor.html#instance-get-renderer",
     "src/Editor.js~Editor#renderer",
     "member"
   ],
@@ -1897,13 +1897,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/editor.js~editor#theme",
-    "class/src/Editor.js~Editor.html#instance-get-theme",
+    "class/src/Editor.js~Editor.html#instance-set-theme",
     "src/Editor.js~Editor#theme",
     "member"
   ],
   [
     "src/editor.js~editor#theme",
-    "class/src/Editor.js~Editor.html#instance-set-theme",
+    "class/src/Editor.js~Editor.html#instance-get-theme",
     "src/Editor.js~Editor#theme",
     "member"
   ],

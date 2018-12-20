@@ -12234,15 +12234,17 @@ var Editor = function () {
     value: function clear() {
       var _this4 = this;
 
-      editorLogger.debug('Clear current model', this.model);
-      triggerCallbacks(this, undefined, Constants.EventType.CLEAR);
-      this.recognizer.clear(this.recognizerContext, this.model, function (err, res) {
-        for (var _len21 = arguments.length, types = Array(_len21 > 2 ? _len21 - 2 : 0), _key21 = 2; _key21 < _len21; _key21++) {
-          types[_key21 - 2] = arguments[_key21];
-        }
+      if (this.canClear) {
+        editorLogger.debug('Clear current model', this.model);
+        triggerCallbacks(this, undefined, Constants.EventType.CLEAR);
+        this.recognizer.clear(this.recognizerContext, this.model, function (err, res) {
+          for (var _len21 = arguments.length, types = Array(_len21 > 2 ? _len21 - 2 : 0), _key21 = 2; _key21 < _len21; _key21++) {
+            types[_key21 - 2] = arguments[_key21];
+          }
 
-        recognizerCallback.apply(undefined, [_this4, err, res].concat(types));
-      });
+          recognizerCallback.apply(undefined, [_this4, err, res].concat(types));
+        });
+      }
     }
 
     /**
@@ -12743,7 +12745,7 @@ var Editor = function () {
   }, {
     key: 'canClear',
     get: function get$$1() {
-      return this.canUndo && this.model.rawStrokes.length > 0;
+      return this.canUndo && !this.isEmpty;
     }
   }, {
     key: 'canConvert',
