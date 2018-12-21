@@ -189,10 +189,10 @@ function recognizerCallback(editor, error, model, ...events) {
       } else if (err.message === 'Session is too old. Max Session Duration Reached' ||
         (err.code && err.code === 'session.too.old')) {
         editorRef.error.innerText = Constants.Error.TOO_OLD;
-      } else if ((err.message || err.code === 1006) && editorRef.error.style.display === 'none') {
+      } else if ((err.code === 1006 || err.code === 1000) && editorRef.error.style.display === 'none') {
         editorRef.error.innerText = Constants.Error.NOT_REACHABLE;
       }
-      if ((editorRef.error.innerText === Constants.Error.TOO_OLD || err.code === 1000 || err.reason === 'CLOSE_RECOGNIZER') && RecognizerContext.canReconnect(editor.recognizerContext)) {
+      if ((editorRef.error.innerText === Constants.Error.TOO_OLD || err.reason === 'CLOSE_RECOGNIZER') && RecognizerContext.canReconnect(editor.recognizerContext)) {
         logger.info('Reconnection is available', err.stack || err);
         editorRef.error.style.display = 'none';
       } else {
@@ -200,6 +200,9 @@ function recognizerCallback(editor, error, model, ...events) {
         triggerCallbacks(editor, err, Constants.EventType.ERROR, ...types);
       }
     } else {
+      if (editorRef.error.style.display === 'initial') {
+        editorRef.error.style.display = 'none';
+      }
       manageRecognizedModel(editorRef, res, ...[...events, ...types].filter((el, i, a) => i === a.indexOf(el))); // Remove duplicate events
     }
   };

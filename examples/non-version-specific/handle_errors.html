@@ -23,10 +23,12 @@
       <div id="editor" touch-action="none"></div>
     </div>
     <script>
-      var editorElement = document.getElementById('editor');
+      const editorElement = document.getElementById('editor');
 
-      editorElement.addEventListener('error', function (evt) {
-        document.querySelector('#result').innerText = JSON.stringify(evt.detail);
+      editorElement.addEventListener('error', (evt) => {
+        if(evt.detail && evt.detail.type !== 'close') {
+          document.querySelector('#result').innerText = JSON.stringify(evt.detail);
+        }
       });
 
       /**
