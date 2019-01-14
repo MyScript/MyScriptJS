@@ -116,50 +116,54 @@ function addIdleListeners(editors) {
 function addInputsPointerDownListener(inputId) {
   const input = document.getElementById(inputId);
   input.addEventListener('pointerdown', (event) => {
-    pointerDownOnInput = true;
-    pointerDownOnInputPoint = extractPoint(event, input, editorElementRef.editor.configuration);
-    if (selectedInput !== input) {
-      if (editorElementRef) {
-        if (selectedInput) {
-          oldInput = selectedInput;
-          editorElementRef.editor.convert();
-          editorElementRef.editor.waitForIdle();
-          waitingForIdle = true;
+    if (editorElementRef.editor.initialized) {
+      pointerDownOnInput = true;
+      pointerDownOnInputPoint = extractPoint(event, input, editorElementRef.editor.configuration);
+      if (selectedInput !== input) {
+        if (editorElementRef) {
+          if (selectedInput) {
+            oldInput = selectedInput;
+            editorElementRef.editor.convert();
+            editorElementRef.editor.waitForIdle();
+            waitingForIdle = true;
+          }
         }
+        clearForIdle = false;
+        selectedEditor === 0 ? editorElementRef = editorElement : editorElementRef = editorElement2;
+        selectedInput = input;
+        editorElementRef.style.width = `${event.target.clientWidth}px`;
+        editorElementRef.style.height = `${event.target.clientHeight}px`;
+        editorElementRef.style.display = 'block';
+        editorElementRef.style.position = 'absolute';
+        editorElementRef.style.left = `${event.target.tagName === 'svg' ? event.target.parentElement.offsetLeft + 1 : event.target.offsetLeft + 1}px`;
+        editorElementRef.style.top = `${event.target.tagName === 'svg' ? event.target.parentElement.offsetTop + 1 : event.target.offsetTop + 1}px`;
+        editorElementRef.style.background = 'white';
+        const inputValue = inputValues.get(selectedInput.id);
+        if (inputValue) {
+          editorElementRef.editor.import_(inputValue, 'text/plain');
+        }
+        editorElementRef.editor.resize();
+        selectedEditor === 0 ? selectedEditor = 1 : selectedEditor = 0;
       }
-      clearForIdle = false;
-      selectedEditor === 0 ? editorElementRef = editorElement : editorElementRef = editorElement2;
-      selectedInput = input;
-      editorElementRef.style.width = `${event.target.clientWidth}px`;
-      editorElementRef.style.height = `${event.target.clientHeight}px`;
-      editorElementRef.style.display = 'block';
-      editorElementRef.style.position = 'absolute';
-      editorElementRef.style.left = `${event.target.tagName === 'svg' ? event.target.parentElement.offsetLeft + 1 : event.target.offsetLeft + 1}px`;
-      editorElementRef.style.top = `${event.target.tagName === 'svg' ? event.target.parentElement.offsetTop + 1 : event.target.offsetTop + 1}px`;
-      editorElementRef.style.background = 'white';
-      const inputValue = inputValues.get(selectedInput.id);
-      if (inputValue) {
-        editorElementRef.editor.import_(inputValue, 'text/plain');
-      }
-      editorElementRef.editor.resize();
-      selectedEditor === 0 ? selectedEditor = 1 : selectedEditor = 0;
     }
   });
   input.addEventListener('pointermove', (event) => { // Trigger a pointerMove
-    if (this.activePointerId && this.activePointerId === event.pointerId) {
-      editorElementRef.editor.pointerMove(extractPoint(event, editorElementRef.editor.domElement, editorElementRef.editor.configuration));
-    } else if (pointerDownOnInput) {
-      const point = extractPoint(event, editorElementRef.editor.domElement, editorElementRef.editor.configuration);
-      const diffX = Math.abs(pointerDownOnInputPoint.x - point.x);
-      const diffY = Math.abs(pointerDownOnInputPoint.y - point.y);
-      // mMaxDiffX = Math.max(diffX, mMaxDiffX);
-      const cond1 = diffX < 1 && diffY > 1; // && mMaxDiffX < 15;
-      const cond2 = diffX > 1 && diffY > 1; // && mMaxDiffX < 15;
-      if (cond1 || cond2) {
-        this.activePointerId = event.pointerId;
-        // Hack for iOS 9 Safari : pointerId has to be int so -1 if > max value
-        const pointerId = event.pointerId > 2147483647 ? -1 : event.pointerId;
-        editorElementRef.editor.pointerDown(pointerDownOnInputPoint, event.pointerType, pointerId);
+    if (editorElementRef.editor.initialized) {
+      if (this.activePointerId && this.activePointerId === event.pointerId) {
+        editorElementRef.editor.pointerMove(extractPoint(event, editorElementRef.editor.domElement, editorElementRef.editor.configuration));
+      } else if (pointerDownOnInput) {
+        const point = extractPoint(event, editorElementRef.editor.domElement, editorElementRef.editor.configuration);
+        const diffX = Math.abs(pointerDownOnInputPoint.x - point.x);
+        const diffY = Math.abs(pointerDownOnInputPoint.y - point.y);
+        // mMaxDiffX = Math.max(diffX, mMaxDiffX);
+        const cond1 = diffX < 1 && diffY > 1; // && mMaxDiffX < 15;
+        const cond2 = diffX > 1 && diffY > 1; // && mMaxDiffX < 15;
+        if (cond1 || cond2) {
+          this.activePointerId = event.pointerId;
+          // Hack for iOS 9 Safari : pointerId has to be int so -1 if > max value
+          const pointerId = event.pointerId > 2147483647 ? -1 : event.pointerId;
+          editorElementRef.editor.pointerDown(pointerDownOnInputPoint, event.pointerType, pointerId);
+        }
       }
     }
   });
