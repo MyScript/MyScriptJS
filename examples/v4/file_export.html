@@ -21,6 +21,9 @@
       }
     </style>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.min.js"
+            integrity="sha256-FPJJt8nA+xL4RU6/gsriA8p8xAeLGatoyTjldvQKGdE="
+            crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
     <script type="text/javascript" src="../../dist/myscript.min.js"></script>
   </head>
@@ -113,15 +116,7 @@
       editorElement.addEventListener('exported', function (evt) {
         const fileType = exportFileType[selectElement.options[selectElement.selectedIndex].value];
         if (evt.detail && evt.detail.exports && evt.detail.exports[fileType.mimeType]) {
-          const aa = document.createElement("a");
-          const url = URL.createObjectURL(fileType.transform(evt.detail.exports[fileType.mimeType]), fileType.mimeType);
-          aa.href = url;
-          aa.download = "myDocument." + fileType.extension;
-          document.body.appendChild(aa);
-          aa.click();
-          aa.remove();
-          URL.revokeObjectURL(url);
-
+          window.saveAs(fileType.transform(evt.detail.exports[fileType.mimeType], fileType.mimeType), `myDocument.${fileType.extension}`);
         }
       });
       undoElement.addEventListener('click', function () {
