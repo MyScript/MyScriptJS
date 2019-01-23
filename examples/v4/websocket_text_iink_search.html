@@ -36,7 +36,6 @@
 </div>
 <script>
   var editorElement = document.getElementById('editor');
-  var resultElement = document.getElementById('result');
   var languageElement = document.getElementById('language');
   var convertElement = document.getElementById('convert');
   var searchInput = document.getElementById('searchInput');
@@ -132,7 +131,6 @@
   });
 
   languageElement.addEventListener('change', function (e) {
-    resultElement.innerHTML = '';
     var configuration = editorElement.editor.configuration;
     //The path to the language depend of the version of API you are using.
     configuration.recognitionParams.v4.lang = e.target.value;
