@@ -1,0 +1,102 @@
+[
+  {
+    "name": "manageResetState",
+    "filePath": "src/Editor.js",
+    "lines": [
+      {
+        "lineNumber": 79,
+        "line": "/**"
+      },
+      {
+        "lineNumber": 80,
+        "line": " * Check if a clear is required, and does it if it is"
+      },
+      {
+        "lineNumber": 81,
+        "line": " * @param {function(recognizerContext: RecognizerContext, model: Model, callback: RecognizerCallback)} resetFunc"
+      },
+      {
+        "lineNumber": 82,
+        "line": " * @param {function(recognizerContext: RecognizerContext, model: Model, callback: RecognizerCallback)} func"
+      },
+      {
+        "lineNumber": 83,
+        "line": " * @param {RecognizerContext} recognizerContext Current recognizer context"
+      },
+      {
+        "lineNumber": 84,
+        "line": " * @param {Model} model Current model"
+      },
+      {
+        "lineNumber": 85,
+        "line": " * @param {RecognizerCallback} callback"
+      },
+      {
+        "lineNumber": 86,
+        "line": " */"
+      },
+      {
+        "lineNumber": 87,
+        "line": "function manageResetState(resetFunc, func, recognizerContext, model, callback, ...params) {"
+      }
+    ],
+    "codeParams": [
+      "resetFunc",
+      "func",
+      "recognizerContext",
+      "model",
+      "callback",
+      "params"
+    ],
+    "docParams": [
+      "resetFunc",
+      "func",
+      "recognizerContext",
+      "model",
+      "callback"
+    ]
+  },
+  {
+    "name": "showActions",
+    "filePath": "src/smartguide/SmartGuide.js",
+    "lines": [
+      {
+        "lineNumber": 138,
+        "line": "/**"
+      },
+      {
+        "lineNumber": 139,
+        "line": " * Show the actions of the action menu."
+      },
+      {
+        "lineNumber": 140,
+        "line": " * @param {Event} evt - Event used to insert the option div using the event's target."
+      },
+      {
+        "lineNumber": 141,
+        "line": " * @param {Object} elements - All the elements of the smart guide."
+      },
+      {
+        "lineNumber": 142,
+        "line": " * @param {SmartGuide} smartGuide"
+      },
+      {
+        "lineNumber": 143,
+        "line": " */"
+      },
+      {
+        "lineNumber": 144,
+        "line": "function showActions(evt, elements) {"
+      }
+    ],
+    "codeParams": [
+      "evt",
+      "elements"
+    ],
+    "docParams": [
+      "evt",
+      "elements",
+      "smartGuide"
+    ]
+  }
+]

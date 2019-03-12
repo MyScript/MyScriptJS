@@ -2,8 +2,8 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <base data-ice="baseUrl">
-  <title data-ice="title">Home | myscript</title>
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">src/recognizer/RecognizerService.js | myscript</title>
   <link type="text/css" rel="stylesheet" href="css/style.css">
   <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
   <script src="script/prettify/prettify.js"></script>
@@ -30,9 +30,9 @@
   <ul>
     
   <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Editor.js~Editor.html">Editor</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-launchExport">launchExport</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getAvailableLanguageList">getAvailableLanguageList</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-register">register</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#callback">callback</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-eventCallback">eventCallback</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#configuration">configuration</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-overrideDefaultBehaviors">overrideDefaultBehaviors</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-overrideDefaultConfiguration">overrideDefaultConfiguration</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-overrideDefaultPenStyle">overrideDefaultPenStyle</a></span></span></li>
@@ -66,6 +66,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Theme">Theme</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#eastereggs">eastereggs</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-importStrokeGroups">importStrokeGroups</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-inkImporter">inkImporter</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#event">event</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-emit">emit</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#grabber">grabber</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-attach">attach</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-detach">detach</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Grabber">Grabber</a></span></span></li>
@@ -101,8 +102,6 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getPointByIndex">getPointByIndex</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-slice">slice</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-toJSON">toJSON</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-toJSONV4">toJSONV4</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getDefaultSymbols">getDefaultSymbols</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getSymbolsBounds">getSymbolsBounds</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-createUndoRedoContext">createUndoRedoContext</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-updateUndoRedoState">updateUndoRedoState</a></span></span></li>
@@ -127,69 +126,23 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-close">close</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-init">init</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-reset">reset</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-emitEvents">emitEvents</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-handleError">handleError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-handleSuccess">handleSuccess</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-manageRecognizedModel">manageRecognizedModel</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Callback">Callback</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Recognizer">Recognizer</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-RecognizerCallback">RecognizerCallback</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-RecognizerInfo">RecognizerInfo</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Triggers">Triggers</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#recognizer-common">recognizer/common</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-extractExports">extractExports</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#recognizer-common-v3">recognizer/common/v3</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-extractRecognizedSymbols">extractRecognizedSymbols</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-extractExports">extractExports</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-extractRecognizedSymbols">extractRecognizedSymbols</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-extractShapeSymbols">extractShapeSymbols</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getStyleFromInkRanges">getStyleFromInkRanges</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-extractExports">extractExports</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#recognizer-rest">recognizer/rest</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-get">get</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#recognizer-rest">recognizer/rest</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-convert">convert</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-export_">export_</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getInfo">getInfo</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-postMessage">postMessage</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-get">get</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-post">post</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#recognizer-rest-v3">recognizer/rest/v3</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-export_">export_</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getInfo">getInfo</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-export_">export_</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getInfo">getInfo</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-export_">export_</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getInfo">getInfo</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-init">init</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-postMessage">postMessage</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-clear">clear</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-export_">export_</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getInfo">getInfo</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-reset">reset</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-buildInput">buildInput</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-export_">export_</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getInfo">getInfo</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-analyzerRestV3Configuration">analyzerRestV3Configuration</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-mathRestV3Configuration">mathRestV3Configuration</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-musicRestV3Configuration">musicRestV3Configuration</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-shapeRestV3Configuration">shapeRestV3Configuration</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-textRestV3Configuration">textRestV3Configuration</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#recognizer-rest-v4">recognizer/rest/v4</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-convert">convert</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-export_">export_</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getInfo">getInfo</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-postMessage">postMessage</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-iinkRestConfiguration">iinkRestConfiguration</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#recognizer-websocket">recognizer/websocket</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-clear">clear</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-close">close</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-init">init</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-retry">retry</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-sendMessage">sendMessage</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-close">close</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-openWebSocket">openWebSocket</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-send">send</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-BuildWebSocketFunction">BuildWebSocketFunction</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#recognizer-websocket-v3">recognizer/websocket/v3</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-buildWebSocketCallback">buildWebSocketCallback</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-clear">clear</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-export_">export_</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getInfo">getInfo</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-init">init</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-reset">reset</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-clear">clear</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-export_">export_</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getInfo">getInfo</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-init">init</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-reset">reset</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-mathWebSocketV3Configuration">mathWebSocketV3Configuration</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-textWebSocketV3Configuration">textWebSocketV3Configuration</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#recognizer-websocket-v4">recognizer/websocket/v4</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-buildWebSocketCallback">buildWebSocketCallback</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-addStrokes">addStrokes</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#recognizer-websocket">recognizer/websocket</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-addStrokes">addStrokes</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-buildConfiguration">buildConfiguration</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-buildNewContentPackageInput">buildNewContentPackageInput</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-buildNewContentPart">buildNewContentPart</a></span></span></li>
@@ -217,7 +170,17 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-undo">undo</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-waitForIdle">waitForIdle</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-zoom">zoom</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-IInkWebSocketV4Configuration">IInkWebSocketV4Configuration</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-buildWebSocketCallback">buildWebSocketCallback</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-clear">clear</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-close">close</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-init">init</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-retry">retry</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-sendMessage">sendMessage</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-close">close</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-openWebSocket">openWebSocket</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-send">send</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-IinkWsConfiguration">IinkWsConfiguration</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-BuildWebSocketFunction">BuildWebSocketFunction</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#renderer">renderer</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-computeAxeAngle">computeAxeAngle</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-computeLinksPoints">computeLinksPoints</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-computeMiddlePoint">computeMiddlePoint</a></span></span></li>
@@ -235,15 +198,11 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Stroker">Stroker</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-StrokerInfo">StrokerInfo</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#renderer-canvas-symbols">renderer/canvas/symbols</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-drawMathSymbol">drawMathSymbol</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-drawMusicSymbol">drawMusicSymbol</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getMusicClefElements">getMusicClefElements</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-drawLine">drawLine</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-drawShapeSymbol">drawShapeSymbol</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-drawStroke">drawStroke</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-drawTextSymbol">drawTextSymbol</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-MathSymbols">MathSymbols</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-MusicClefs">MusicClefs</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-MusicSymbols">MusicSymbols</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-ShapeSymbols">ShapeSymbols</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-TextSymbols">TextSymbols</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#renderer-svg">renderer/svg</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-attach">attach</a></span></span></li>
@@ -260,191 +219,184 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-launchSmartGuide">launchSmartGuide</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-resize">resize</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-SmartGuide">SmartGuide</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#util">util</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-computeStats">computeStats</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-destructurePromise">destructurePromise</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Stats">Stats</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#util">util</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-destructurePromise">destructurePromise</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-DestructuredPromise">DestructuredPromise</a></span></span></li>
 </ul>
 </div>
 </nav>
 
-<div class="content" data-ice="content"><div data-ice="index" class="github-markdown"><h1 id="myscriptjs">MyScriptJS</h1><p><a href="https://badge.fury.io/js/myscript"><img src="https://badge.fury.io/js/myscript.svg" alt="npm version"></a>
-<a href="https://myscript.github.io/MyScriptJS/examples/"><img src="https://img.shields.io/badge/Link%20to-examples-blue.svg" alt="Examples"></a>
-<a href="https://developer.myscript.com/docs/interactive-ink/latest/web/myscriptjs/"><img src="https://img.shields.io/badge/Link%20to-documentation-green.svg" alt="Documentation"></a></p>
-<blockquote>
-<p>The fastest way to integrate rich <strong>handwriting</strong> features in your webapp.</p>
-</blockquote>
-<p><div>
-  <img src="https://myscript.github.io/MyScriptJS/preview.gif">
-</div>
+<div class="content" data-ice="content"><h1 data-ice="title">src/recognizer/RecognizerService.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import Constants from &apos;../configuration/Constants&apos;;
+import { recognizerLogger as logger } from &apos;../configuration/LoggerConfig&apos;;
+import * as InkModel from &apos;../model/InkModel&apos;;
+import * as SmartGuide from &apos;../smartguide/SmartGuide&apos;;
+import * as RecognizerContext from &apos;../model/RecognizerContext&apos;;
+import { launchExport } from &apos;../Editor&apos;;
 
-</p>
-<p>MyScriptJS is a JavaScript library that can be used in every web application to bring handwriting recognition.</p>
-<p>It integrates all you need:</p>
-<ul>
-<li>Signal capture for all devices,</li>
-<li>Digital ink rendering,</li>
-<li>Link to MyScript Cloud to bring handwriting recognition.</li>
-</ul>
-<h2 id="table-of-contents">Table of contents</h2><ul>
-<li><a href="https://github.com/MyScript/MyScriptJS#examples">Examples</a></li>
-<li><a href="https://github.com/MyScript/MyScriptJS#features">Features</a></li>
-<li><a href="https://github.com/MyScript/MyScriptJS#requirements">Requirements</a></li>
-<li><a href="https://github.com/MyScript/MyScriptJS#installation">Installation</a></li>
-<li><a href="https://github.com/MyScript/MyScriptJS#usage">Usage</a></li>
-<li><a href="https://github.com/MyScript/MyScriptJS#documentation">Documentation</a></li>
-<li><a href="https://github.com/MyScript/MyScriptJS#development">Development</a></li>
-<li><a href="https://github.com/MyScript/MyScriptJS#support">Support</a></li>
-<li><a href="https://github.com/MyScript/MyScriptJS#sharing-your-feedback">Feedback</a></li>
-<li><a href="https://github.com/MyScript/MyScriptJS#contributing">Contributing</a></li>
-</ul>
-<h2 id="examples">Examples</h2><p>Discover Interactive Ink with MyScriptJS and its major features with our <a href="http://webdemo.myscript.com/views/text.html">text demo and tutorial</a>.</p>
-<p>Try our two basic examples featuring <a href="https://myscript.github.io/MyScriptJS//examples/v4/websocket_text_iink.html">the text recognition</a> and <a href="https://myscript.github.io/MyScriptJS/examples/v4/websocket_math_iink.html">the math recognition</a>.</p>
-<p><a href="https://myscript.github.io/MyScriptJS/examples/">All our examples</a> with the source codes in <a href="https://github.com/MyScript/MyScriptJS/tree/master/examples">this directory</a>.</p>
-<p>We also provide examples of integration with the major JavaScript frameworks:</p>
-<table>
-<thead>
-<tr>
-<th>Framework</th>
-<th>Link</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><div><img src="https://myscript.github.io/MyScriptJS/assets/react.svg" height="50"></div></td>
-<td><a href="https://github.com/MyScript/web-integration-samples/tree/master/react-integration-examples">Example of React integration</a></td>
-</tr>
-<tr>
-<td><div><img src="https://myscript.github.io/MyScriptJS/assets/angular.svg" height="50"></div></td>
-<td><a href="https://github.com/MyScript/web-integration-samples/tree/master/angular-integration-examples">Example of Angular integration</a></td>
-</tr>
-<tr>
-<td><div><img src="https://myscript.github.io/MyScriptJS/assets/vue.svg" height="50"></div></td>
-<td><a href="https://github.com/MyScript/web-integration-samples/tree/master/vue-integration-examples">Example of Vue integration</a></td>
-</tr>
-</tbody>
-</table>
-<h2 id="features">Features</h2><ul>
-<li>Text and Math support,</li>
-<li>Easy to integrate,</li>
-<li>Digital ink capture and rendering,</li>
-<li>Rich editing gestures,</li>
-<li>Import and export content,</li>
-<li>Styling,</li>
-<li>Typeset support,</li>
-<li>More than 200 mathematical symbols supported,</li>
-<li>65 supported languages.</li>
-</ul>
-<p>You can discover all the features on our Developer website for <a href="https://developer.myscript.com/text">Text</a> and <a href="https://developer.myscript.com/math">Math</a>.</p>
-<h2 id="requirements">Requirements</h2><ol>
-<li>Have <a href="https://www.npmjs.com/get-npm">npm</a>, <a href="https://yarnpkg.com/en/docs/install">yarn</a> or <a href="https://bower.io/#install-bower">bower</a> installed.</li>
-<li>Have a MyScript developer account. You can create one <a href="https://developer.myscript.com/support/account/registering-myscript-cloud/">here</a>.</li>
-<li>Get your keys and the free monthly quota to access MyScript Cloud at <a href="https://developer.myscript.com/getting-started/web">developer.myscript.com</a></li>
-</ol>
-<h2 id="installation">Installation</h2><p>MyScriptJS can be installed with the well known package managers <code>npm</code>, <code>yarn</code> and <code>bower</code>. </p>
-<p>If you want to use <code>npm</code> or <code>yarn</code> you first have to init a project (or use an existing one). </p>
-<pre><code class="lang-shell"><code class="source-code prettyprint">npm init
-OR
-yarn init </code>
-</code></pre>
-<p>You can then install MyScriptJS and use it as showed in the <a href="https://github.com/MyScript/MyScriptJS#usage">Usage</a> section.</p>
-<pre><code class="lang-shell"><code class="source-code prettyprint">npm install myscript
-OR
-yarn add myscript</code>
-</code></pre>
-<p>You can also install MyScriptJS using bower (with or without an existing project) and use it as showed in the <a href="https://github.com/MyScript/MyScriptJS#usage">Usage</a> section replacing <code>node_modules</code> by <code>bower_components</code>.</p>
-<pre><code class="lang-shell"><code class="source-code prettyprint">bower install myscript</code>
-</code></pre>
-<h2 id="usage">Usage</h2><ol>
-<li><p>Create an <code>index.html</code> file in the same directory.</p>
-</li>
-<li><p>Add the following lines in the <code>head</code> section of your file to use MyScriptJS and the css. We use <a href="https://github.com/jquery/PEP">PEP</a> to ensure better browsers compatibilities. Note that you can also use it using dependencies from <code>node_modules</code> or <code>bower_components</code>:</p>
-<pre><code class="lang-html"><code class="source-code prettyprint">&lt;link rel=&quot;stylesheet&quot; href=&quot;node_modules/myscript/dist/myscript.min.css&quot;/&gt;
-&lt;script src=&quot;node_modules/myscript/dist/myscript.min.js&quot;&gt;&lt;/script&gt;
-&lt;script src=&quot;https://code.jquery.com/pep/0.4.3/pep.js&quot;&gt;&lt;/script&gt;</code>
-</code></pre>
-</li>
-<li><p>Still in the <code>head</code> section, add a <code>style</code> and specify the height and the width of your editor:</p>
-<pre><code class="lang-html"><code class="source-code prettyprint">&lt;style&gt;
- #editor {
-     width: 100%;
-     height: 100%;
- }
-&lt;/style&gt;</code>
-</code></pre>
-</li>
-<li><p>In the <code>body</code> tag, create a <code>div</code> tag that will contain the editing area:</p>
-<pre><code class="lang-html"><code class="source-code prettyprint"> &lt;div id=&quot;editor&quot;&gt;&lt;/div&gt;</code>
-</code></pre>
-</li>
-<li><p>In JavaScript and within a <code>&lt;script&gt;</code> tag placed before the closing tag <code>&lt;/body&gt;</code>, create the editor using the <code>register</code> function, your editor html element and a simple configuration:</p>
-<pre><code class="lang-javascript"><code class="source-code prettyprint">const editorElement = document.getElementById(&apos;editor&apos;);
+/**
+ * Emit events
+ * @param {Editor} editor
+ * @param {Object} data
+ * @param {...String} types
+ * @return {Model}
+ */
+export function emitEvents(editor, data, ...types) {
+  const editorRef = editor;
+  types.forEach((type) =&gt; {
+    switch (type) {
+      case Constants.EventType.RENDERED:
+        break; // Internal use only
+      case Constants.EventType.UNDO:
+      case Constants.EventType.REDO:
+      case Constants.EventType.CLEAR:
+      case Constants.EventType.CONVERT:
+      case Constants.EventType.EXPORT:
+        editor.emit.call(editor.domElement, type);
+        break;
+      case Constants.EventType.LOADED:
+      case Constants.EventType.CHANGED:
+        editor.emit.call(editor.domElement, type, {
+          initialized: editor.initialized,
+          canUndo: editor.canUndo,
+          canRedo: editor.canRedo,
+          canClear: editor.canClear,
+          isEmpty: editor.isEmpty,
+          possibleUndoCount: editor.possibleUndoCount,
+          undoStackIndex: editor.undoStackIndex,
+          canConvert: editor.canConvert,
+          canExport: editor.canExport
+        });
+        break;
+      case Constants.EventType.EXPORTED:
+        window.clearTimeout(editorRef.notifyTimer);
+        editorRef.notifyTimer = window.setTimeout(() =&gt; {
+          editor.emit.call(editor.domElement, type, {
+            exports: editor.exports
+          });
+        }, editorRef.configuration.processDelay);
+        break;
+      case Constants.EventType.SUPPORTED_IMPORT_MIMETYPES:
+        editor.emit.call(editor.domElement, type, {
+          mimeTypes: editor.supportedImportMimeTypes
+        });
+        break;
+      case Constants.EventType.ERROR:
+        editor.emit.call(editor.domElement, type, data);
+        break;
+      case Constants.EventType.IDLE:
+        editor.emit.call(editor.domElement, type, {
+          idle: editor.idle
+        });
+        break;
+      default:
+        logger.debug(`No valid trigger configured for ${type}`);
+        break;
+    }
+  });
+}
 
-MyScript.register(editorElement, {
- recognitionParams: {
-   type: &apos;TEXT&apos;,
-   server: {
-     applicationKey: &apos;#YOUR MYSCRIPT DEVELOPER APPLICATION KEY#&apos;,
-     hmacKey: &apos;#YOUR MYSCRIPT DEVELOPER HMAC KEY#&apos;
-   }
- }
-});</code>
-</code></pre>
-</li>
-<li><p>Your <code>index.html</code> file should look like this:</p>
-<pre><code class="lang-html"><code class="source-code prettyprint">&lt;html&gt;
- &lt;head&gt;
-     &lt;link rel=&quot;stylesheet&quot; href=&quot;node_modules/myscript/dist/myscript.min.css&quot;/&gt;
-     &lt;script src=&quot;node_modules/myscript/dist/myscript.min.js&quot;&gt;&lt;/script&gt;
-     &lt;script src=&quot;https://code.jquery.com/pep/0.4.3/pep.js&quot;&gt;&lt;/script&gt;
-     &lt;style&gt;
-         #editor {
-             width: 100%;
-             height: 100%;
-         }
-     &lt;/style&gt;
- &lt;/head&gt;
- &lt;body&gt;
-     &lt;div id=&quot;editor&quot; touch-action=&quot;none&quot;&gt;&lt;/div&gt;
- &lt;script&gt;
-     const editorElement = document.getElementById(&apos;editor&apos;);
+/**
+ * Manage recognized model
+ * @param {Editor} editor
+ * @param {Model} model
+ * @param {...String} types
+ */
+export function manageRecognizedModel(editor, model, ...types) {
+  const editorRef = editor;
+  const modelRef = model;
+  logger.debug(`model changed callback on ${types} event(s)`, model);
+  if (modelRef.creationTime === editor.model.creationTime) {
+    // Merge recognized model if relevant and return current editor model
+    if ((modelRef.rawStrokes.length === editor.model.rawStrokes.length) &amp;&amp;
+      (modelRef.lastPositions.lastSentPosition &gt;= editor.model.lastPositions.lastReceivedPosition)) {
+      editorRef.model = InkModel.mergeModels(editorRef.model, modelRef);
+      if (InkModel.needRedraw(editorRef.model) || types.includes(Constants.EventType.RENDERED)) {
+        editor.renderer.drawModel(editor.rendererContext, editorRef.model, editor.stroker);
+      }
+    } else {
+      editorRef.model = modelRef;
+      editor.renderer.drawModel(editor.rendererContext, editorRef.model, editor.stroker);
+    }
+    emitEvents(editor, undefined, ...types);
+  }
 
-     MyScript.register(editorElement, {
-         recognitionParams: {
-             type: &apos;TEXT&apos;,
-             server: {
-                 applicationKey: &apos;#YOUR MYSCRIPT DEVELOPER APPLICATION KEY#&apos;,
-                 hmacKey: &apos;#YOUR MYSCRIPT DEVELOPER HMAC KEY#&apos;
-             }
-         }
-     });
- &lt;/script&gt;
- &lt;/body&gt;
-&lt;/html&gt;</code>
+  if (editor.configuration.recognitionParams.type === &apos;TEXT&apos;
+    &amp;&amp; editor.configuration.recognitionParams.protocol !== &apos;REST&apos;
+    &amp;&amp; editor.configuration.recognitionParams.iink.text.mimeTypes.includes(Constants.Exports.JIIX)
+    &amp;&amp; editor.configuration.recognitionParams.iink.text.smartGuide) {
+    // eslint-disable-next-line no-use-before-define
+    editorRef.smartGuide = SmartGuide.launchSmartGuide(editor.smartGuide, modelRef.exports);
+  }
+
+  if ((InkModel.extractPendingStrokes(model).length &gt; 0) &amp;&amp;
+    (!editor.recognizer.addStrokes) &amp;&amp; // FIXME: Ugly hack to avoid double export (addStrokes + export)
+    (editor.configuration.triggers.exportContent !== Constants.Trigger.DEMAND)) {
+    launchExport(editor, model);
+  }
+}
+
+/**
+ * Method called when server respond with an error
+ * Use in catch on Promises
+ * @param {Editor} editor
+ * @param {Object} err
+ * @param {...String} events
+ */
+export function handleError(editor, err, ...events) {
+  const editorRef = editor;
+  if (err.type !== &apos;close&apos;) {
+    logger.error(&apos;Error while firing the recognition&apos;, err.stack || err); // Handle any error from all above steps
+  }
+  if (
+    // IInk error managment before refactor
+    (err.message === &apos;Invalid application key.&apos;) || (err.message === &apos;Invalid HMAC&apos;) ||
+    // CDK error managment
+    (err.error &amp;&amp;
+      err.error.result &amp;&amp;
+      err.error.result.error &amp;&amp;
+      (err.error.result.error === &apos;InvalidApplicationKeyException&apos; || err.error.result.error === &apos;InvalidHMACSignatureException&apos;)) ||
+    // IInk error managment after refactor
+    (err.code &amp;&amp; err.code === &apos;access.not.granted&apos;)) {
+    editorRef.error.innerText = Constants.Error.WRONG_CREDENTIALS;
+  } else if (err.message === &apos;Session is too old. Max Session Duration Reached.&apos; ||
+    (err.code &amp;&amp; err.code === &apos;session.too.old&apos;)) {
+    editorRef.error.innerText = Constants.Error.TOO_OLD;
+  } else if ((err.code === 1006 || err.code === 1000) &amp;&amp; editorRef.error.style.display === &apos;none&apos;) {
+    editorRef.error.innerText = Constants.Error.NOT_REACHABLE;
+  }
+  if ((editorRef.error.innerText === Constants.Error.TOO_OLD || err.reason === &apos;CLOSE_RECOGNIZER&apos;) &amp;&amp; RecognizerContext.canReconnect(editor.recognizerContext)) {
+    logger.info(&apos;Reconnection is available&apos;, err.stack || err);
+    editorRef.error.style.display = &apos;none&apos;;
+  } else {
+    editorRef.loader.style.display = &apos;none&apos;;
+    editorRef.error.style.display = &apos;initial&apos;;
+    emitEvents(editor, err, Constants.EventType.ERROR, ...events);
+  }
+}
+
+/**
+ * Method called when server respond correctly to request or WS
+ * Use in then on Promises
+ * @param {Editor} editor
+ * @param {Object} model
+ * @param {...String} events
+ */
+export function handleSuccess(editor, model, ...events) {
+  const editorRef = editor;
+  if (editor.undoRedoManager.updateModel) {
+    editor.undoRedoManager.updateModel(editor.undoRedoContext, model)
+      .then(({ res, types }) =&gt; {
+        manageRecognizedModel(editorRef, res, ...[...events, ...types].filter((el, i, a) =&gt; i === a.indexOf(el)));
+      });
+  } else {
+    if (editorRef.error.style.display === &apos;initial&apos;) {
+      editorRef.error.style.display = &apos;none&apos;;
+    }
+    manageRecognizedModel(editorRef, model, ...events);
+  }
+}
 </code></pre>
-</li>
-<li><p>Open <code>index.html</code> in your browser or serve your folder content using any web server.</p>
-</li>
-</ol>
-<p>You can find this guide and a more complete example on the <a href="https://developer.myscript.com/docs/interactive-ink/latest/web/myscriptjs/">MyScript Developer website</a>.</p>
-<h2 id="documentation">Documentation</h2><p>You can find a complete documentation with the following sections on our Developer website:</p>
-<ul>
-<li><strong>Get Started</strong>: <a href="https://developer.myscript.com/docs/interactive-ink/latest/web/myscriptjs/get-started/">how to use MyScriptJS with a full example</a>,</li>
-<li><strong>Editing</strong>: <a href="https://developer.myscript.com/docs/interactive-ink/latest/web/myscriptjs/editing/">how to interact with content</a>,</li>
-<li><strong>Conversion</strong>: <a href="https://developer.myscript.com/docs/interactive-ink/latest/web/myscriptjs/conversion/">how to convert your handwritten content</a>,</li>
-<li><strong>Import and Export</strong>: <a href="https://developer.myscript.com/docs/interactive-ink/latest/web/myscriptjs/import-and-export/">how to import and export your content</a>,</li>
-<li><strong>Styling</strong>: <a href="https://developer.myscript.com/docs/interactive-ink/latest/web/myscriptjs/styling/">how to style content</a>.</li>
-</ul>
-<p>As well as a global <a href="https://developer.myscript.com/docs/interactive-ink/latest/reference/web/configuration/">Configuration page</a>.</p>
-<p>We also provide a complete <a href="https://myscript.github.io/MyScriptJS/docs">API Reference</a>.</p>
-<h2 id="development">Development</h2><p>Instructions to help you build the project and develop are available in the <a href="https://github.com/MyScript/MyScriptJS/blob/master/SETUP.md">SETUP.md</a> file.</p>
-<h2 id="getting-support">Getting support</h2><p>You can get support and ask your questions on the <a href="https://developer-support.myscript.com/support/discussions/forums/16000096021">dedicated section</a> of MyScript Developer website.</p>
-<h2 id="sharing-your-feedback--">Sharing your feedback ?</h2><p>Made a cool app with MyScriptJS? We would love to hear about you!
-We&#x2019;re planning to showcase apps using it so let us know by sending a quick mail to <a href="mailto://myapp@myscript.com">myapp@myscript.com</a>.</p>
-<h2 id="contributing">Contributing</h2><p>We welcome your contributions: if you would like to extend MyScriptJS for your needs, feel free to fork it! </p>
-<p>Please take a look at our <a href="https://github.com/MyScript/MyScriptJS/blob/master/CONTRIBUTING.md">contributing</a> guidelines before submitting your pull request.</p>
-<h2 id="license">License</h2><p>This library is licensed under the <a href="http://opensource.org/licenses/Apache-2.0">Apache 2.0</a>.</p>
-</div>
+
 </div>
 
 <footer class="footer">

@@ -7,7 +7,7 @@
 > The fastest way to integrate rich **handwriting** features in your webapp.
 
 <div align="center">
-  <img src="preview.gif">
+  <img src="https://myscript.github.io/MyScriptJS/preview.gif">
 </div>
 
 MyScriptJS is a JavaScript library that can be used in every web application to bring handwriting recognition.
@@ -44,9 +44,9 @@ We also provide examples of integration with the major JavaScript frameworks:
 
 | Framework | Link |
 | --- | --- |
-|   <div align="center"><img src="assets/react.svg" height="50"></div> | [Example of React integration](https://github.com/MyScript/web-integration-samples/tree/master/react-integration-examples) |
-|   <div align="center"><img src="assets/angular.svg" height="50"></div> | [Example of Angular integration](https://github.com/MyScript/web-integration-samples/tree/master/angular-integration-examples) |
-|   <div align="center"><img src="assets/vue.svg" height="50"></div> | [Example of Vue integration](https://github.com/MyScript/web-integration-samples/tree/master/vue-integration-examples) |
+|   <div align="center"><img src="https://myscript.github.io/MyScriptJS/assets/react.svg" height="50"></div> | [Example of React integration](https://github.com/MyScript/web-integration-samples/tree/master/react-integration-examples) |
+|   <div align="center"><img src="https://myscript.github.io/MyScriptJS/assets/angular.svg" height="50"></div> | [Example of Angular integration](https://github.com/MyScript/web-integration-samples/tree/master/angular-integration-examples) |
+|   <div align="center"><img src="https://myscript.github.io/MyScriptJS/assets/vue.svg" height="50"></div> | [Example of Vue integration](https://github.com/MyScript/web-integration-samples/tree/master/vue-integration-examples) |
 
 ## Features
 
