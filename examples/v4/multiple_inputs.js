@@ -20,7 +20,7 @@ const mainElement = document.getElementById('mainContent');
 const inputs = [];
 const inputValues = new Map();
 
-for (let i = 1; i < 5; i++) {
+for (let i = 1; i < 2; i++) {
   inputs[i] = document.createElement('div');
   inputs[i].id = `input${i}`;
   inputs[i].setAttribute('touch-action', 'none');
@@ -29,7 +29,7 @@ for (let i = 1; i < 5; i++) {
 
   const label = document.createElement('label');
   label.setAttribute('for', inputs[i].id);
-  label.innerText = `Input N°${i}`;
+  label.innerText = `Texte à la main...`;
 
   mainElement.appendChild(label);
   mainElement.appendChild(inputs[i]);
