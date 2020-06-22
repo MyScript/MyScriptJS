@@ -4,6 +4,19 @@
 [![Examples](https://img.shields.io/badge/Link%20to-examples-blue.svg)](https://myscript.github.io/MyScriptJS/examples/)
 [![Documentation](https://img.shields.io/badge/Link%20to-documentation-green.svg)](https://developer.myscript.com/docs/interactive-ink/latest/web/myscriptjs/)
 
+## :warning: This repository is archived :warning:
+iinkJS grants you high integration flexibility by letting you choose your favorite framework or components. For this reason, we have decided to focus on iinkJS and to discontinue our ready-to-use Web components.
+
+For more information, please see [documentation](https://developer.myscript.com/).
+
+We also provide an example to integrate [iinkJS](https://github.com/MyScript/iinkJS) as webcomponent: [link](https://github.com/MyScript/web-integration-samples).
+
+<div align="center">
+
+:construction:
+
+</div>
+
 > The fastest way to integrate rich **handwriting** features in your webapp.
 
 <div align="center">
